@@ -1,4 +1,5 @@
 import { Button } from "./ui/button"
+import { redirect } from "next/navigation";
 
 export const Navbar = async () => {
 
@@ -17,7 +18,7 @@ export const Navbar = async () => {
                     </div>
 
                     <div>
-                        <Button variant="blue_variant" text="Login" />
+                        <Button variant="blue_variant" text="Login" onClick={() => {redirect("/signin")}} />
                     </div>
                 </div>
 
