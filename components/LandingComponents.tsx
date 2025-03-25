@@ -6,11 +6,11 @@ const heroItems = [
             'https://www.studywithshubh.tech/shubhimg.jpg',
     },
     {
-        imageUrl: 'SWSBGREMOVEDLOGO.png',
+        imageUrl: '/SWSBGREMOVEDLOGO.png',
     },
     {
         imageUrl:
-            'swsLogo.png',
+            '/swsLogo.png',
     },
     {
         imageUrl: 'https://www.studywithshubh.tech/courseThumbnails/ipMysql.png',

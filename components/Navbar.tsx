@@ -1,14 +1,15 @@
 import { EnterDoor } from "@/icons/EnterDoor";
 import { Button } from "./ui/button"
 import { redirect } from "next/navigation";
+import Image from "next/image";
 
-export const Navbar = async () => {
+export const Navbar = () => {
 
     return (
         <div className="flex justify-center items-center">
             <div className="w-290 cursor-pointer h-36 border-2 mt-2 border-blue-300 rounded-2xl flex flex-col md:flex-row md:justify-between items-center shadow-sm shadow-blue-200 hover:shadow-lg hover:shadow-emerald-200 transition-all duration-500">
                 <div onClick={() => { redirect("/") }}>
-                    <img src="swsLogo.png" alt="sws logo" className="w-32 md:w-48" />
+                    <Image src="/swsLogo.png" alt="SWS logo" width={192} height={192} className="w-32 md:w-48" />
                 </div>
 
                 <div className="flex justify-center items-center mr-10">

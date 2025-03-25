@@ -1,6 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
@@ -24,7 +25,7 @@ export const InfiniteMovingCards = ({
 
     useEffect(() => {
         addAnimation();
-    }, []);
+    }, [addAnimation]);
     const [start, setStart] = useState(false);
     function addAnimation() {
         if (containerRef.current && scrollerRef.current) {
@@ -94,9 +95,16 @@ export const InfiniteMovingCards = ({
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            <img
+                            {/* <img
                                 src={item.imageUrl}
                                 alt={`Card ${idx + 1}`}
+                                className="aspect-video rounded-2xl border-2 border-primary/10 object-cover transition-all duration-300 hover:-translate-y-2 hover:border-primary/20"
+                            /> */}
+                            <Image
+                                src={item.imageUrl}
+                                alt={`Card ${idx + 1}`}
+                                width={400} // Adjust this based on your needs
+                                height={225} // Adjust this based on your needs
                                 className="aspect-video rounded-2xl border-2 border-primary/10 object-cover transition-all duration-300 hover:-translate-y-2 hover:border-primary/20"
                             />
                         </Link>
