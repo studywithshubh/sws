@@ -25,11 +25,11 @@ export const Button = ({variant , text , onClick , startIcon , endIcon}: buttonP
                 className={`${buttonVariants[variant]} ${defaultButtonStyles}`}
                 onClick={onClick}
             >
-                <div className="mr-2">
+                <div className="mr-1">
                     {startIcon}
                 </div>
                 {text}
-                <div className="ml-2">
+                <div className="ml-1">
                     {endIcon}
                 </div>
             </button>

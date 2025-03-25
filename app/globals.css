@@ -3,3 +3,37 @@
 @theme {
     --color-mainBgColor: #0a0a0c;
 }
+
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(calc(-100% - 1rem));
+    }
+}
+
+.scroller {
+    --animation-direction: forwards;
+    --animation-duration: 40s;
+}
+
+.scroller[data-direction="right"] {
+    --animation-direction: reverse;
+}
+
+.scroller[data-speed="fast"] {
+    --animation-duration: 20s;
+}
+
+.scroller[data-speed="slow"] {
+    --animation-duration: 80s;
+}
+
+.animate-scroll {
+    animation: scroll var(--animation-duration, 40s) linear infinite var(--animation-direction, forwards);
+}
+
+.hover\:\[animation-play-state\:paused\]:hover {
+    animation-play-state: paused;
+}
