@@ -7,8 +7,8 @@ import React, { useEffect, useState } from 'react';
 
 export const InfiniteMovingCards = ({
     items,
-    direction = 'left',
-    speed = 'normal',
+    // direction = 'left',
+    // speed = 'normal',
     pauseOnHover = true,
     className,
 }: {
@@ -44,34 +44,34 @@ export const InfiniteMovingCards = ({
         addAnimation();
     }, []);
 
-    const getDirection = () => {
-        if (containerRef.current) {
-            containerRef.current.style.setProperty(
-                '--animation-direction',
-                direction === 'left' ? 'forwards' : 'reverse'
-            );
-        }
-    };
+    // const getDirection = () => {
+    //     if (containerRef.current) {
+    //         containerRef.current.style.setProperty(
+    //             '--animation-direction',
+    //             direction === 'left' ? 'forwards' : 'reverse'
+    //         );
+    //     }
+    // };
 
-    const getSpeed = () => {
-        if (containerRef.current) {
-            let duration;
-            switch (speed) {
-                case 'fast':
-                    duration = '20s'; // Faster on mobile
-                    break;
-                case 'normal':
-                    duration = '60s'; // Slower on mobile
-                    break;
-                case 'slow':
-                    duration = '120s';
-                    break;
-                default:
-                    duration = '60s';
-            }
-            containerRef.current.style.setProperty('--animation-duration', duration);
-        }
-    };
+    // const getSpeed = () => {
+    //     if (containerRef.current) {
+    //         let duration;
+    //         switch (speed) {
+    //             case 'fast':
+    //                 duration = '20s'; // Faster on mobile
+    //                 break;
+    //             case 'normal':
+    //                 duration = '60s'; // Slower on mobile
+    //                 break;
+    //             case 'slow':
+    //                 duration = '120s';
+    //                 break;
+    //             default:
+    //                 duration = '60s';
+    //         }
+    //         containerRef.current.style.setProperty('--animation-duration', duration);
+    //     }
+    // };
 
     return (
         <div
