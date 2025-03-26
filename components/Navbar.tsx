@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { DesktopScreen } from "@/icons/DesktopScreen";
+import Loader from "./ui/Loader";
 
 export const Navbar = () => {
     const router = useRouter();
@@ -41,9 +42,7 @@ export const Navbar = () => {
     if (loading) {
         return (
             <div className="flex justify-center items-center">
-                <div className="w-290 h-36 border-2 mt-2 border-blue-300 rounded-2xl flex items-center justify-center">
-                    <div className="animate-pulse">Loading...</div>
-                </div>
+                <Loader/>
             </div>
         );
     }

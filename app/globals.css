@@ -2,6 +2,7 @@
 
 @theme {
     --color-mainBgColor: #0a0a0c;
+    --color-dashboardBgColor: #0a0b10;
 }
 
 @keyframes slow-spin {
