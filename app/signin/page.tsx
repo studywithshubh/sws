@@ -1,98 +1,85 @@
-// "use client"
-// import { useState } from 'react';
-// import { useRouter } from 'next/navigation';
-// import axios from 'axios';
+"use client"
 
-// export default function Signin() {
-//   const [formData, setFormData] = useState({
-//     email: '',
-//     password: ''
-//   });
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState('');
-//   const router = useRouter();
-
-//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const { name, value } = e.target;
-//     setFormData(prev => ({ ...prev, [name]: value }));
-//   };
-
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     setError('');
-
-//     try {
-//       const response = await axios.post(
-//         `http://localhost:3001/api/v1/auth/user/signin`,
-//         formData,
-//         { withCredentials: true } // Important for cookie-based auth
-//       );
-
-//       if (response.status === 200) {
-//         router.push('/dashboard/payment');
-//       }
-//     } catch (err: any) {
-//       setError(err.response?.data?.message || 'Signin failed');
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-mainBgColor text-white flex items-center justify-center">
-//       <div className="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg">
-//         <h1 className="text-2xl font-bold mb-6 text-center">Sign In</h1>
-        
-//         {error && <div className="mb-4 p-2 bg-red-500 text-white rounded">{error}</div>}
-
-//         <form onSubmit={handleSubmit} className="space-y-4">
-//           <div>
-//             <label className="block mb-1">Email</label>
-//             <input
-//               type="email"
-//               name="email"
-//               value={formData.email}
-//               onChange={handleChange}
-//               className="w-full p-2 rounded bg-gray-700 text-white"
-//               required
-//             />
-//           </div>
-
-//           <div>
-//             <label className="block mb-1">Password</label>
-//             <input
-//               type="password"
-//               name="password"
-//               value={formData.password}
-//               onChange={handleChange}
-//               className="w-full p-2 rounded bg-gray-700 text-white"
-//               required
-//             />
-//           </div>
-
-//           <button
-//             type="submit"
-//             disabled={loading}
-//             className={`w-full py-2 px-4 rounded font-medium ${loading ? 'bg-gray-600' : 'bg-blue-600 hover:bg-blue-700'}`}
-//           >
-//             {loading ? 'Signing In...' : 'Sign In'}
-//           </button>
-//         </form>
-
-//         <p className="mt-4 text-center">
-//           Don't have an account?{' '}
-//           <a href="/signup" className="text-blue-400 hover:underline">Sign Up</a>
-//         </p>
-//       </div>
-//     </div>
-//   );
-// }
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button"
+import { EnterDoor } from "@/icons/EnterDoor"
+import Image from "next/image"
+import { redirect } from "next/navigation"
+import { Input } from "@/components/ui/Input";
 
 export default function Signin() {
-  return (
-      <>
-          SignIn Page, UnderContruction That was only for testing!
-      </>
-  )
+    return (
+        <div className="relative min-h-screen bg-mainBgColor overflow-hidden">
+            {/* Fixed glow effects - made smaller on mobile */}
+            <div className="fixed inset-0 overflow-hidden pointer-events-none">
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.3 }}
+                    transition={{ duration: 1 }}
+                    className="absolute animate-pulse bottom-0 right-0 w-[300px] h-[300px] md:w-[600px] md:h-[600px] rounded-full bg-white/30 blur-[80px] md:blur-[150px]"
+                />
+
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1.2 }}
+                    transition={{ duration: 2, delay: 0.5 }}
+                    className="absolute animate-pulse top-0 left-0 w-[250px] h-[250px] md:w-[500px] md:h-[500px] rounded-full bg-purple-500/20 blur-[60px] md:blur-[120px]"
+                />
+
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 2.4 }}
+                    transition={{ duration: 2, delay: 1 }}
+                    className="absolute animate-pulse top-1/2 left-1/2 w-[200px] h-[200px] md:w-[400px] md:h-[400px] rounded-full bg-orange-500/20 blur-[50px] md:blur-[100px] transform -translate-x-1/2 -translate-y-1/2"
+                />
+            </div>
+
+            <div className="relative z-10 text-white container mx-auto px-4 sm:px-6 lg:px-8">
+                {/* navbar for signup page */}
+
+                <div className="flex justify-center items-center">
+                    <div className="w-290 cursor-pointer h-40 border-2 mt-2 border-blue-300 rounded-2xl flex flex-col md:justify-center items-center shadow-sm shadow-blue-200 hover:shadow-lg hover:shadow-emerald-200 transition-all duration-500">
+                        <div onClick={() => { redirect("/") }}>
+                            <Image src="/swsLogo.png" alt="SWS logo" width={192} height={192} className="w-32 md:w-48" />
+                        </div>
+
+                        {/* <div>
+                            <Button variant="general_1" text="Login" endIcon={<EnterDoor />} onClick={() => { redirect("/signin") }} />
+                        </div> */}
+
+                    </div>
+                </div>
+
+                <div className="mt-5">
+                    <div className="mb-5">
+                        <h1 className="cursor-pointer tracking-tighter text-xl md:text-3xl text-center font-bold my-1 sm:my-2">
+                            <span className="font-bold bg-gradient-to-b from-blue-300 to-cyan-400 bg-clip-text text-transparent">
+                                LogIn To Your Account
+                            </span>
+                        </h1>
+                    </div>
+
+                    <div className="flex cursor-pointer flex-col justify-center items-center">
+                        <Input className="m-3 font-bold" type="email" placeholder="Email" />
+                        <Input className="m-3 font-bold" type="password" placeholder="Password" />
+                    </div>
+                    
+                    <div className="flex justify-center">
+                        <Button text="LogIn" variant="general_1" endIcon={<EnterDoor/>}/> 
+                    </div>
+
+                    <p className="text-white text-center mt-6">
+                        Dont have an account?{" "}
+                        <span
+                            onClick={() => redirect("/signup")}
+                            className="text-blue-400 font-bold cursor-pointer hover:underline"
+                        >
+                            SignUp
+                        </span>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    )
 }
