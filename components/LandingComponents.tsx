@@ -25,7 +25,7 @@ const heroItems = [
 export const LandingComponents = () => {
     return (
 
-        <InfiniteMovingCards items={heroItems} />
+        <InfiniteMovingCards speed="normal" items={heroItems} />
 
     )
 }
