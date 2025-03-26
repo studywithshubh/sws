@@ -23,7 +23,8 @@ export default function Home() {
 
     return (
         <div className="relative min-h-screen bg-mainBgColor overflow-hidden">
-            <div className="absolute inset-0 overflow-hidden">
+            {/* fixed */}
+            <div className="fixed inset-0 overflow-hidden pointer-events-none">
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 0.3 }}
@@ -33,16 +34,16 @@ export default function Home() {
 
                 <motion.div
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 0.5 }}
+                    animate={{ opacity: 1.2 }}
                     transition={{ duration: 2, delay: 0.5 }}
-                    className="absolute animate-pulse top-0 left-0 w-[500px] h-[500px] rounded-full bg-blue-500/30 blur-[120px]"
+                    className="absolute animate-pulse top-0 left-0 w-[500px] h-[500px] rounded-full bg-blue-500/20 blur-[120px]"
                 />
 
                 <motion.div
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 1.6 }}
+                    animate={{ opacity: 2.4 }}
                     transition={{ duration: 2, delay: 1 }}
-                    className="absolute animate-pulse top-1/2 left-1/2 w-[400px] h-[400px] rounded-full bg-purple-500/20 blur-[100px] transform -translate-x-1/2 -translate-y-1/2"
+                    className="absolute animate-pulse top-1/2 left-1/2 w-[400px] h-[400px] rounded-full bg-emerald-500/20 blur-[100px] transform -translate-x-1/2 -translate-y-1/2"
                 />
             </div>
 
@@ -131,8 +132,6 @@ export default function Home() {
                 </div>
                         
             </div>
-                            
-
         </div>
     );
 }
