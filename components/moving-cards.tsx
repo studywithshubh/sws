@@ -91,7 +91,7 @@ export const InfiniteMovingCards = ({
                         className="relative max-w-[24rem] flex-shrink-0 rounded-xl"
                     >
                         <Link
-                            href="https://harkirat.classx.co.in/new-courses"
+                            href="https://github.com/studywithshubh"
                             target="_blank"
                             rel="noopener noreferrer"
                         >

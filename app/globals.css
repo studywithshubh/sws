@@ -4,6 +4,19 @@
     --color-mainBgColor: #0a0a0c;
 }
 
+@keyframes slow-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-slow-spin {
+    animation: slow-spin 10s linear infinite;
+}
+
 @keyframes scroll {
     from {
         transform: translateX(0);

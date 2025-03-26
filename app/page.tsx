@@ -1,9 +1,25 @@
 "use client";
 import { LandingComponents } from "@/components/LandingComponents";
 import { Navbar } from "@/components/Navbar";
+import { Button } from "@/components/ui/button";
+import { ThanksForVisit } from "@/components/ui/Thanks-for-visit";
+import { Camera } from "@/icons/Camera";
+import { GraduationCap } from "@/icons/GraduationCap";
 import { motion } from "framer-motion";
+import { FaDatabase, FaCode, FaLaptopCode, FaServer, FaPython, FaSchool } from "react-icons/fa";
+import Image from "next/image";
+import Footer from "@/components/Footer";
 
 export default function Home() {
+
+    const courses = [
+        { name: "Computer Science", icon: <FaLaptopCode /> },
+        { name: "Web Development", icon: <FaCode /> },
+        { name: "Backend Development", icon: <FaServer /> },
+        { name: "CBSE - CS, IP Courses", icon: <FaSchool /> },
+        { name: "Python Programming", icon: <FaPython /> },
+        { name: "MySQL & Databases", icon: <FaDatabase /> },
+    ];
 
     return (
         <div className="relative min-h-screen bg-mainBgColor overflow-hidden">
@@ -48,14 +64,74 @@ export default function Home() {
                     </h1>
                 </div>
                 <p className="mt-1 text-primary/80 text-center tracking-tight md:text-lg">
-                    Master Coding & Tech with Us – Learn, Grow, Succeed!                
+                    Master Coding & Tech with Us – Learn, Grow, Succeed!
                 </p>
 
-                <div className="flex justify-center mt-10">
-                    <LandingComponents/>                
+                <div className="flex justify-center mt-10 space-x-4">
+                    <Button text="Explore Courses" variant="blue_variant" endIcon={<GraduationCap />} />
+                    <Button text="Demo Lectures" variant="general_1" endIcon={<Camera />} onClick={() => { window.open("https://studywithshubh.tech/demo") }} />
                 </div>
-            </div>
 
+                <div className="flex justify-center mt-10">
+                    <LandingComponents />
+                </div>
+
+
+                <div>
+                    <div className="text-center text-white mt-20 px-4 flex flex-col">
+                        <h2 className="text-xl md:text-4xl font-bold text-white mb-10">
+                            What You'll Learn With Us
+                        </h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                            {courses.map((course, index) => (
+                                <div key={index} className="bg-white/10 p-6 flex items-center gap-4 rounded-2xl shadow-lg hover:bg-white/20 transition">
+                                    <div className="text-4xl text-blue-400">{course.icon}</div>
+                                    <div className="text-lg font-semibold text-white">
+                                        {course.name}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="flex justify-center mt-10">
+                        <Button text="View Courses" variant="purple_variant" />
+                    </div>
+                </div>
+
+                <div className="flex space-x-40 justify-center mt-10 items-center">
+
+                    <div className="">
+                        <ThanksForVisit />
+                    </div>
+
+                    <div onClick={() => {window.open("https://shubhhere.vercel.app")}}>
+                        <Image src="/shubhImg.png" alt="SWS logo" width={100} height={100} className="cursor-pointer w-32 md:w-80" />
+                    </div>
+
+                    <div className="">
+                        <ThanksForVisit />
+                    </div>
+                </div>
+
+                <div className="flex items-center justify-center flex-col">
+                    <span className="tracking-tighter md:text-xl text-center font-medium text-primary/80 ">
+                        Founder & Developer
+                    </span>
+
+                    <h1 className="cursor-pointer tracking-tighter md:text-4xl text-center font-bold my-2">
+                        <span className="font-bold bg-gradient-to-b from-blue-300 to-cyan-400 bg-clip-text text-transparent">
+                            Shubhashish Chakraborty
+                        </span>
+                    </h1>
+                </div>
+                            
+                <div>
+                    <Footer/>
+                </div>
+                        
+            </div>
+                            
 
         </div>
     );

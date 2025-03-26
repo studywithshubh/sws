@@ -9,12 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-separator": "^1.1.2",
     "axios": "^1.8.4",
     "clsx": "^2.1.1",
     "framer-motion": "^12.5.0",
     "next": "15.2.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
     "tailwind-merge": "^3.0.2"
   },
   "devDependencies": {

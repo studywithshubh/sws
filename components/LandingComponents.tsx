@@ -3,14 +3,14 @@ import { InfiniteMovingCards } from "./moving-cards"
 const heroItems = [
     {
         imageUrl:
-            'https://www.studywithshubh.tech/shubhimg.jpg',
+            '/swsLogo.png',
     },
     {
         imageUrl: '/SWSBGREMOVEDLOGO.png',
     },
     {
         imageUrl:
-            '/swsLogo.png',
+            '/coursesImages/cs12cohortTN.png',
     },
     {
         imageUrl: 'https://www.studywithshubh.tech/courseThumbnails/ipMysql.png',
