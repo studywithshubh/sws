@@ -36,8 +36,8 @@ export const InfiniteMovingCards = ({
                     }
                 });
     
-                getDirection();
-                getSpeed();
+                // getDirection();
+                // getSpeed();
                 setStart(true);
             }
         }
