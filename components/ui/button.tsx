@@ -13,9 +13,10 @@ const defaultButtonStyles = "cursor-pointer flex items-center justify-center spa
 interface buttonProps {
     variant: "general_1" | "general_2" | "blue_variant" | "red_variant" | "purple_variant";
     text: string;
+    disabled?: boolean;
     onClick?: () => void;
     startIcon?: ReactElement;
-    endIcon?: ReactElement;
+    endIcon?: ReactElement | null;
 }
 
 export const Button = ({variant , text , onClick , startIcon , endIcon}: buttonProps) => {
