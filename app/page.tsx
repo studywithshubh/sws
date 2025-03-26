@@ -80,7 +80,7 @@ export default function Home() {
                 <div>
                     <div className="text-center text-white mt-20 px-4 flex flex-col">
                         <h2 className="text-xl md:text-4xl font-bold text-white mb-10">
-                            What You'll Learn With Us
+                            What Youll Learn With Us
                         </h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
                             {courses.map((course, index) => (
