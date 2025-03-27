@@ -32,7 +32,7 @@ interface RazorpayPaymentResponse {
 // fixing the type error from the error occuring above: 
 declare global {
     interface Window {
-        Razorpay: new (options: any) => { open: () => void };
+        Razorpay: new (options: unknown) => { open: () => void };
     }
 }
 
@@ -127,6 +127,7 @@ export const CourseCard = ({
         } catch (err: unknown) {
             if (axios.isAxiosError(error)) {
                 setError(error.response?.data?.message || 'Payment initiation failed');
+                console.log(err);
             } else {
                 setError('An unexpected error occurred.');
             }

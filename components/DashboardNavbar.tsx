@@ -26,7 +26,6 @@ export const DashboardNavbar = () => {
             } catch (error) {
                 setIsLoggedIn(false);
                 console.log(error);
-                console.log(isLoggedIn);
             } finally {
                 setLoading(false);
             }
@@ -34,6 +33,7 @@ export const DashboardNavbar = () => {
         checkAuthStatus();
     }, []);
 
+    console.log(isLoggedIn);
     // Close menu when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
