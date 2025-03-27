@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "./button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
@@ -17,9 +17,22 @@ interface CourseCardProps {
     couponCode?: string;
 }
 
+interface RazorpayPaymentResponse {
+    razorpay_payment_id: string;
+    razorpay_order_id: string;
+    razorpay_signature: string;
+}
+
+// declare global {
+//     interface Window {
+//         Razorpay: unknown;
+//     }
+// }
+
+// fixing the type error from the error occuring above: 
 declare global {
     interface Window {
-        Razorpay: any;
+        Razorpay: new (options: any) => { open: () => void };
     }
 }
 
@@ -36,7 +49,7 @@ export const CourseCard = ({
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const router = useRouter();
-    
+
     const handlePayment = async () => {
         setLoading(true);
         setError("");
@@ -70,7 +83,7 @@ export const CourseCard = ({
                     name: 'Study With Shubh',
                     description: `Purchase: ${title}`,
                     order_id: order.id,
-                    handler: async function (response: any) {
+                    handler: async function (response: RazorpayPaymentResponse) { // or maybe can this if not working: (response: any): Promise<void> 
                         try {
                             // 4. Verify payment with backend
                             await axios.post(
@@ -87,6 +100,7 @@ export const CourseCard = ({
                             router.push('/dashboard');
                         } catch (err) {
                             setError('Payment verification failed. Please contact support.');
+                            console.log(err)
                         }
                     },
                     prefill: {
@@ -110,8 +124,13 @@ export const CourseCard = ({
 
             document.body.appendChild(script);
 
-        } catch (err: any) {
-            setError(err.response?.data?.message || 'Payment initiation failed');
+        } catch (err: unknown) {
+            if (axios.isAxiosError(error)) {
+                setError(error.response?.data?.message || 'Payment initiation failed');
+            } else {
+                setError('An unexpected error occurred.');
+            }
+            // setError(err.response?.data?.message || 'Payment initiation failed');
         } finally {
             setLoading(false);
         }

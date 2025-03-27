@@ -25,6 +25,8 @@ export const DashboardNavbar = () => {
                 setIsLoggedIn(response.status === 200);
             } catch (error) {
                 setIsLoggedIn(false);
+                console.log(error);
+                console.log(isLoggedIn);
             } finally {
                 setLoading(false);
             }

@@ -35,8 +35,12 @@ export default function Signin() {
 
             // Redirect to dashboard after 1 second
             setTimeout(() => router.push('/dashboard'), 1000);
-        } catch (error: any) {
-            showNotification(error.response?.data?.message || 'Login failed. Please try again.', 'error');
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                showNotification(error.response?.data?.message || 'Login failed. Please try again.', 'error');
+            } else {
+                showNotification('An unexpected error occurred.', 'error');
+            }
         } finally {
             setLoading(false);
         }
@@ -56,8 +60,8 @@ export default function Signin() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     className={`fixed top-4 right-4 p-4 rounded-md shadow-lg z-50 ${notification.type === 'success'
-                            ? 'bg-green-500 text-white'
-                            : 'bg-red-500 text-white'
+                        ? 'bg-green-500 text-white'
+                        : 'bg-red-500 text-white'
                         }`}
                 >
                     {notification.message}
@@ -137,7 +141,8 @@ export default function Signin() {
                     </div>
 
                     <p className="text-white text-center mt-6">
-                        Don't have an account?{" "}
+                        Don&apos;t have an account?
+                        {" "}
                         <span
                             onClick={() => router.push("/signup")}
                             className="text-blue-400 font-bold cursor-pointer hover:underline"

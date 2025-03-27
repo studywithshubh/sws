@@ -39,6 +39,7 @@ export default function Dashboard() {
             } catch (error) {
                 // If not authenticated, redirect to signin
                 router.push('/signin');
+                console.log(error);
             }
         };
         checkAuth();

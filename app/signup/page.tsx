@@ -34,8 +34,12 @@ export default function Signup() {
             const response = await axios.post('http://localhost:3001/api/v1/auth/user/signup', formData);
             showNotification(response.data.message || 'Signup successful! Please check your email for OTP.', 'success');
             setShowOtpInput(true);
-        } catch (error: any) {
-            showNotification(error.response?.data?.message || 'Signup failed. Please try again.', 'error');
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                showNotification(error.response?.data?.message || 'Signup failed. Please try again.', 'error');
+            } else {
+                showNotification('An unexpected error occurred.', 'error');
+            }
         } finally {
             setLoading(false);
         }
@@ -50,8 +54,12 @@ export default function Signup() {
             });
             showNotification(response.data.message || 'Email verified successfully! Redirecting to login...', 'success');
             setTimeout(() => router.push('/signin'), 2000);
-        } catch (error: any) {
-            showNotification(error.response?.data?.message || 'OTP verification failed. Please try again.', 'error');
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                showNotification(error.response?.data?.message || 'OTP verification failed. Please try again.', 'error');
+            } else {
+                showNotification('An unexpected error occurred.', 'error');
+            }
         } finally {
             setLoading(false);
         }
@@ -70,11 +78,10 @@ export default function Signup() {
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
-                    className={`fixed top-4 right-4 p-4 rounded-md shadow-lg z-50 ${
-                        notification.type === 'success' 
-                            ? 'bg-green-500 text-white' 
+                    className={`fixed top-4 right-4 p-4 rounded-md shadow-lg z-50 ${notification.type === 'success'
+                            ? 'bg-green-500 text-white'
                             : 'bg-red-500 text-white'
-                    }`}
+                        }`}
                 >
                     {notification.message}
                 </motion.div>
@@ -126,71 +133,72 @@ export default function Signup() {
                     {!showOtpInput ? (
                         /* Signup Form */
                         <div className="flex cursor-pointer flex-col justify-center items-center">
-                            <Input 
+                            <Input
                                 name="username"
                                 value={formData.username}
                                 onChange={handleChange}
-                                className="m-3 font-bold" 
-                                type="text" 
-                                placeholder="Username" 
+                                className="m-3 font-bold"
+                                type="text"
+                                placeholder="Username"
                             />
-                            <Input 
+                            <Input
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="m-3 font-bold" 
-                                type="email" 
-                                placeholder="Email" 
+                                className="m-3 font-bold"
+                                type="email"
+                                placeholder="Email"
                             />
-                            <Input 
+                            <Input
                                 name="contactNumber"
                                 value={formData.contactNumber}
                                 onChange={handleChange}
-                                className="m-3 font-bold" 
-                                type="text" 
-                                placeholder="Contact Number" 
+                                className="m-3 font-bold"
+                                type="text"
+                                placeholder="Contact Number"
                             />
-                            <Input 
+                            <Input
                                 name="password"
                                 value={formData.password}
                                 onChange={handleChange}
-                                className="m-3 font-bold" 
-                                type="password" 
-                                placeholder="Password" 
+                                className="m-3 font-bold"
+                                type="password"
+                                placeholder="Password"
                             />
-                            
+
                             <div className="flex justify-center">
-                                <Button 
-                                    text={loading ? 'Signing Up...' : 'SignUp'} 
-                                    variant="general_1" 
-                                    endIcon={loading ? null : <EnterDoor/>}
+                                <Button
+                                    text={loading ? 'Signing Up...' : 'SignUp'}
+                                    variant="general_1"
+                                    endIcon={loading ? null : <EnterDoor />}
                                     onClick={handleSignup}
                                     disabled={loading}
-                                /> 
+                                />
                             </div>
                         </div>
                     ) : (
                         /* OTP Verification Form */
                         <div className="flex flex-col justify-center items-center">
                             <p className="mb-4 text-center">
-                                We've sent an OTP to {formData.email}. Please enter it below:
+                                We&apos;ve sent an OTP to {formData.email}. Please enter it below:
+
                             </p>
-                            <Input 
+                            <Input
                                 name="otp"
                                 value={otp}
                                 onChange={(e) => setOtp(e.target.value)}
-                                className="m-3 font-bold" 
-                                type="text" 
-                                placeholder="Enter OTP" 
+                                className="m-3 font-bold"
+                                type="text"
+                                placeholder="Enter OTP"
                             />
-                            
+
                             <div className="flex justify-center">
-                                <Button 
-                                    text={loading ? 'Verifying...' : 'Verify OTP'} 
-                                    variant="general_1" 
+                                <Button
+                                    text={loading ? 'Verifying...' : 'Verify OTP'}
+                                    variant="general_1"
                                     onClick={handleVerifyOtp}
                                     disabled={loading}
-                                /> 
+                                />
                             </div>
                         </div>
                     )}

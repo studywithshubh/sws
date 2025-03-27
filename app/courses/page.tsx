@@ -5,6 +5,18 @@ import { motion } from "framer-motion";
 import { CourseCard } from "@/components/ui/CourseCard";
 import { Navbar } from "@/components/Navbar";
 
+
+interface CourseCardProps {
+    id: number;
+    userId: string;
+    title: string;
+    imageUrl: string;
+    notionUrl: string;
+    price: number;
+    discountedPrice?: number;
+    couponCode?: string;
+}
+
 export default function Courses() {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -83,7 +95,7 @@ export default function Courses() {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {courses.map((course: any) => (
+                        {courses.map((course: CourseCardProps) => (
                             <CourseCard
                                 key={course.id}
                                 userId={userId}

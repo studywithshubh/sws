@@ -23,6 +23,7 @@ export const Navbar = () => {
                 setIsLoggedIn(response.status === 200);
             } catch (error) {
                 setIsLoggedIn(false);
+                console.log(error)
             } finally {
                 setLoading(false);
             }
