@@ -1,9 +1,14 @@
+"use client";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "./button";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface CourseCardProps {
     id: number;
+    userId: string;
     title: string;
     imageUrl: string;
     notionUrl: string;
@@ -12,8 +17,15 @@ interface CourseCardProps {
     couponCode?: string;
 }
 
+declare global {
+    interface Window {
+        Razorpay: any;
+    }
+}
+
 export const CourseCard = ({
     id,
+    userId,
     title,
     imageUrl,
     notionUrl,
@@ -21,10 +33,93 @@ export const CourseCard = ({
     discountedPrice,
     couponCode
 }: CourseCardProps) => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const router = useRouter();
+    
+    const handlePayment = async () => {
+        setLoading(true);
+        setError("");
+
+        try {
+            // 1. Initiate payment with backend
+            const response = await axios.post(
+                'http://localhost:3001/api/v1/sws/payment/initiate',
+                {
+                    courseId: id,
+                    userId: userId,
+                    couponCode: couponCode || undefined
+                },
+                { withCredentials: true }
+            );
+
+            const { order, paymentId } = response.data;
+            const finalAmount = discountedPrice || price;
+
+            // 2. Load Razorpay script dynamically
+            const script = document.createElement('script');
+            script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+            script.async = true;
+
+            script.onload = () => {
+                // 3. Configure Razorpay options
+                const options = {
+                    key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+                    amount: finalAmount * 100, // Razorpay expects amount in paise
+                    currency: 'INR',
+                    name: 'Study With Shubh',
+                    description: `Purchase: ${title}`,
+                    order_id: order.id,
+                    handler: async function (response: any) {
+                        try {
+                            // 4. Verify payment with backend
+                            await axios.post(
+                                `http://localhost:3001/api/v1/sws/payment/verify/${paymentId}`,
+                                {
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_signature: response.razorpay_signature
+                                },
+                                { withCredentials: true }
+                            );
+
+                            // 5. Redirect to courses page on success
+                            router.push('/dashboard');
+                        } catch (err) {
+                            setError('Payment verification failed. Please contact support.');
+                        }
+                    },
+                    prefill: {
+                        name: 'Customer Name', // You can fetch from user data
+                        email: 'customer@example.com', // You can fetch from user data
+                        contact: '9999999999' // You can fetch from user data
+                    },
+                    theme: {
+                        color: '#3399cc'
+                    },
+                    modal: {
+                        ondismiss: function () {
+                            setError('Payment was cancelled');
+                        }
+                    }
+                };
+
+                const rzp = new window.Razorpay(options);
+                rzp.open();
+            };
+
+            document.body.appendChild(script);
+
+        } catch (err: any) {
+            setError(err.response?.data?.message || 'Payment initiation failed');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <motion.div
-            className="relative w-100 h-96 rounded-2xl overflow-hidden group"
+            className="relative w-100 h-100 rounded-2xl overflow-hidden group"
             whileHover={{ scale: 1.02 }}
         >
             {/* Glassmorphism background effect */}
@@ -75,6 +170,11 @@ export const CourseCard = ({
                         )}
                     </div>
 
+                    {/* Error message */}
+                    {error && (
+                        <div className="text-red-400 text-sm">please first login to Buy a Course</div>
+                    )}
+
                     {/* Buttons */}
                     <div className="flex gap-3">
                         <Button
@@ -83,8 +183,10 @@ export const CourseCard = ({
                             onClick={() => window.open(notionUrl)}
                         />
                         <Button
-                            text="Buy Now"
+                            text={loading ? "Loading..." : "Buy Now"}
                             variant="green_variant"
+                            onClick={handlePayment}
+                            disabled={loading}
                         />
                     </div>
                 </div>

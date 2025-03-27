@@ -8,6 +8,28 @@ import { Navbar } from "@/components/Navbar";
 export default function Courses() {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [userId, setUserId] = useState('');
+
+    useEffect(() => {
+        async function getUserId() {
+            try {
+                const response = await axios.get(
+                    `http://localhost:3001/api/v1/auth/user/session`,
+                    { withCredentials: true }
+                );
+
+                setUserId(response.data.message.user.id);
+                // console.log(); log and test
+
+                
+            } catch (error) {
+                console.error("Error fetching userId:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        getUserId();
+    } , []);
 
     useEffect(() => {
         async function getCourses() {
@@ -64,6 +86,7 @@ export default function Courses() {
                         {courses.map((course: any) => (
                             <CourseCard
                                 key={course.id}
+                                userId={userId}
                                 id={course.id}
                                 title={course.title}
                                 imageUrl={course.imageUrl}
