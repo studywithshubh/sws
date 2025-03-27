@@ -172,7 +172,7 @@ export const CourseCard = ({
 
                     {/* Error message */}
                     {error && (
-                        <div className="text-red-400 text-sm">please first login to Buy a Course</div>
+                        <div className="text-red-400 text-sm">please first login to Buy a Course | {error}</div>
                     )}
 
                     {/* Buttons */}

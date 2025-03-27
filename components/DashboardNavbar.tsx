@@ -90,6 +90,9 @@ export const DashboardNavbar = () => {
                                     <div className="p-2 text-white hover:bg-gray-700 rounded-md cursor-pointer">
                                         Bookmarks
                                     </div>
+                                    <div onClick={() => router.push("/courses")} className="p-2 text-white hover:bg-gray-700 rounded-md cursor-pointer">
+                                        Buy a Course
+                                    </div>
                                     <div className="p-2 text-white hover:bg-gray-700 rounded-md cursor-pointer">
                                         Settings
                                     </div>

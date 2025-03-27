@@ -9,6 +9,25 @@ export default function Dashboard() {
     const router = useRouter();
     const [username , setUsername] = useState("");
     const [loading, setLoading] = useState(true);
+    const [courses, setCourses] = useState([]);
+
+    useEffect(() => {
+        async function getCourses() {
+            try {
+                const response = await axios.get("http://localhost:3001/api/v1/auth/user/my-courses" , {
+                    withCredentials: true
+                });
+                setCourses(response.data.userCourses);
+            } catch (error) {
+                console.error("Error fetching courses:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        getCourses();
+    } , [])
+
+
 
     // Check authentication status on component mount
     useEffect(() => {
@@ -55,6 +74,10 @@ export default function Dashboard() {
                         </div>
                     )
                 }
+            </div>
+
+            <div>
+                {JSON.stringify(courses)}
             </div>
         </div>
     );
