@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import axios from 'axios';
 import { motion } from "framer-motion";
 import { CourseCard } from "@/components/ui/CourseCard";
+import { Navbar } from "@/components/Navbar";
 
 export default function Courses() {
     const [courses, setCourses] = useState([]);
@@ -49,6 +50,7 @@ export default function Courses() {
             </div>
 
             <div className="relative z-10 text-white container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <Navbar/>
                 <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center bg-gradient-to-r from-blue-300 to-cyan-400 bg-clip-text text-transparent">
                     Explore Our Courses
                 </h1>
@@ -65,7 +67,7 @@ export default function Courses() {
                                 id={course.id}
                                 title={course.title}
                                 imageUrl={course.imageUrl}
-                                description={course.description}
+                                notionUrl={course.notionUrl} 
                                 price={course.price}
                                 discountedPrice={course.discountedPrice}
                                 couponCode={course.couponCode}
