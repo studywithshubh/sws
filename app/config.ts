@@ -1,1 +1,1 @@
-export const BACKEND_URL = "https://swsbetest.vercel.app"; // currently its under testing!
+export const BACKEND_URL = "http://localhost:3001"; // currently its under testing!

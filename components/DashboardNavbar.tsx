@@ -8,6 +8,7 @@ import Loader from "./ui/Loader";
 import { User } from "@/icons/User";
 import { motion, AnimatePresence } from "framer-motion";
 import { BACKEND_URL } from "@/app/config";
+import { Dropdown } from "@/icons/Dropdown";
 
 export const DashboardNavbar = () => {
     const router = useRouter();
@@ -15,8 +16,11 @@ export const DashboardNavbar = () => {
     const [loading, setLoading] = useState(true);
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
+    const [role , setRole] = useState("");
+    const [email , setEmail] = useState("");
 
-    console.log(isLoggedIn);
+
+    console.log(`Am i LoggedIn: ${isLoggedIn}`);
     
     useEffect(() => {
         const checkAuthStatus = async () => {
@@ -46,6 +50,18 @@ export const DashboardNavbar = () => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    // fetching user data from /me
+    useEffect(() => {
+        async function getUserData() {
+            const response = await axios.get(`${BACKEND_URL}/api/v1/auth/user/me`, {
+                withCredentials: true,
+            });
+            setRole(response.data.finalUserData.role);
+            setEmail(response.data.finalUserData.email);
+        }
+        getUserData();
+    } , [])
+
     // Logout function
     const handleLogout = async () => {
         try {
@@ -69,7 +85,7 @@ export const DashboardNavbar = () => {
 
                 {/* Menu */}
                 <div className="mr-6 relative" ref={menuRef}>
-                    <Button text="Menu" variant="general_1" endIcon={<User />} onClick={() => setMenuOpen(!menuOpen)} />
+                    <Button text="Menu" variant="general_1" endIcon={<Dropdown />} onClick={() => setMenuOpen(!menuOpen)} />
 
                     {/* Dropdown Menu */}
                     <AnimatePresence>
@@ -82,6 +98,19 @@ export const DashboardNavbar = () => {
                                 className="absolute right-0 mt-2 w-56 origin-top-right bg-slate-900 divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
                             >
                                 <div className="px-1 py-1">
+                                    <div className="flex m-8 flex-col justify-center items-center space-x-3">
+                                        <div className="flex justify-center space-x-2">
+                                            <div>
+                                                <User/>
+                                            </div>
+                                            <div>
+                                                {role}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            {email}
+                                        </div>
+                                    </div>
                                     <div className="p-2 text-white hover:bg-gray-700 rounded-md cursor-pointer">Bookmarks</div>
                                     <div onClick={() => router.push("/courses")} className="p-2 text-white hover:bg-gray-700 rounded-md cursor-pointer">
                                         Buy a Course
