@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { DesktopScreen } from "@/icons/DesktopScreen";
 import Loader from "./ui/Loader";
+import { BACKEND_URL } from "@/app/config";
 
 export const Navbar = () => {
     const router = useRouter();
@@ -17,7 +18,7 @@ export const Navbar = () => {
     useEffect(() => {
         const checkAuthStatus = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api/v1/auth/user/session', { 
+                const response = await axios.get(`${BACKEND_URL}/api/v1/auth/user/session`, { 
                     withCredentials: true
                 });
                 setIsLoggedIn(response.status === 200);

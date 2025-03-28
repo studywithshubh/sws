@@ -7,6 +7,7 @@ import axios from "axios";
 import Loader from "./ui/Loader";
 import { User } from "@/icons/User";
 import { motion, AnimatePresence } from "framer-motion";
+import { BACKEND_URL } from "@/app/config";
 
 export const DashboardNavbar = () => {
     const router = useRouter();
@@ -19,7 +20,7 @@ export const DashboardNavbar = () => {
     useEffect(() => {
         const checkAuthStatus = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api/v1/auth/user/session', {
+                const response = await axios.get(`${BACKEND_URL}/api/v1/auth/user/session`, {
                     withCredentials: true
                 });
                 setIsLoggedIn(response.status === 200);
@@ -102,7 +103,7 @@ export const DashboardNavbar = () => {
                                         className="p-2 text-red-500 hover:bg-red-600 hover:text-black rounded-md cursor-pointer"
                                         onClick={async () => {
                                             await axios.post(
-                                                'http://localhost:3001/api/v1/auth/user/logout',
+                                                `${BACKEND_URL}/api/v1/auth/user/logout`,
                                                 {},
                                                 { withCredentials: true }
                                             );
