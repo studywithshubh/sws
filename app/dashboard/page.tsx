@@ -8,55 +8,62 @@ import { BACKEND_URL } from "../config";
 
 export default function Dashboard() {
     const router = useRouter();
-    const [username , setUsername] = useState("");
+    const [username, setUsername] = useState("");
     const [loading, setLoading] = useState(true);
     const [courses, setCourses] = useState([]);
+    const [authChecked, setAuthChecked] = useState(false);
 
-    useEffect(() => {
-        async function getCourses() {
-            try {
-                const response = await axios.get(`${BACKEND_URL}/api/v1/auth/user/my-courses` , {
-                    withCredentials: true
-                });
-                setCourses(response.data.userCourses);
-            } catch (error) {
-                console.error("Error fetching courses:", error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        getCourses();
-    } , [])
-
-
-
-    // Check authentication status on component mount
+    // First check authentication
     useEffect(() => {
         const checkAuth = async () => {
             try {
+                // First verify session
                 await axios.get(`${BACKEND_URL}/api/v1/auth/user/session`, {
-                    withCredentials: true
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
                 });
+                setAuthChecked(true);
             } catch (error) {
-                // If not authenticated, redirect to signin
+                console.error("Auth error:", error);
                 router.push('/signin');
-                console.log(error);
             }
         };
         checkAuth();
     }, [router]);
 
-
+    // Then fetch data if authenticated
     useEffect(() => {
-        async function getUsername() {
-            const response = await axios.get(`${BACKEND_URL}/api/v1/auth/user/me` , {
-                withCredentials: true
-            });
-            setUsername(response.data.finalUserData.username);
-            setLoading(false);
-        }
-        getUsername();
-    } , [])// get username on mounting itself!    
+        if (!authChecked) return;
+
+        const fetchData = async () => {
+            try {
+                // Make parallel requests
+                const [coursesRes, userRes] = await Promise.all([
+                    axios.get(`${BACKEND_URL}/api/v1/auth/user/my-courses`, {
+                        withCredentials: true
+                    }),
+                    axios.get(`${BACKEND_URL}/api/v1/auth/user/me`, {
+                        withCredentials: true
+                    })
+                ]);
+
+                setCourses(coursesRes.data.userCourses);
+                setUsername(userRes.data.finalUserData.username);
+            } catch (error) {
+                console.error("Data fetch error:", error);
+                // If unauthorized, redirect to login
+                if (axios.isAxiosError(error) && error.response?.status === 401) {
+                    router.push('/signin');
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [authChecked, router]);
 
     return (
         <div className="h-screen bg-dashboardBgColor text-white">
@@ -65,17 +72,7 @@ export default function Dashboard() {
             </div>
 
             <div className="flex justify-start mt-10 text-xl ml-5 md:text-4xl">
-                {
-                    loading ? (
-                        <Loader/>
-                    )
-                    :
-                    (   
-                        <div>
-                            welcome {username}!
-                        </div>
-                    )
-                }
+                {loading ? <Loader/> : <div>welcome {username}!</div>}
             </div>
 
             <div>
