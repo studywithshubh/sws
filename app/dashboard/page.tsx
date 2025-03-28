@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DashboardNavbar } from "@/components/DashboardNavbar";
 import Loader from "@/components/ui/Loader";
+import { BACKEND_URL } from "../config";
 
 export default function Dashboard() {
     const router = useRouter();
@@ -14,7 +15,7 @@ export default function Dashboard() {
     useEffect(() => {
         async function getCourses() {
             try {
-                const response = await axios.get("http://localhost:3001/api/v1/auth/user/my-courses" , {
+                const response = await axios.get(`${BACKEND_URL}/api/v1/auth/user/my-courses` , {
                     withCredentials: true
                 });
                 setCourses(response.data.userCourses);
@@ -33,7 +34,7 @@ export default function Dashboard() {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                await axios.get('http://localhost:3001/api/v1/auth/user/session', {
+                await axios.get(`${BACKEND_URL}/api/v1/auth/user/session`, {
                     withCredentials: true
                 });
             } catch (error) {
@@ -48,7 +49,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         async function getUsername() {
-            const response = await axios.get("http://localhost:3001/api/v1/auth/user/me" , {
+            const response = await axios.get(`${BACKEND_URL}/api/v1/auth/user/me` , {
                 withCredentials: true
             });
             setUsername(response.data.finalUserData.username);

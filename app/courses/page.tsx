@@ -4,6 +4,7 @@ import axios from 'axios';
 import { motion } from "framer-motion";
 import { CourseCard } from "@/components/ui/CourseCard";
 import { Navbar } from "@/components/Navbar";
+import { BACKEND_URL } from "../config";
 
 
 interface CourseCardProps {
@@ -26,7 +27,7 @@ export default function Courses() {
         async function getUserId() {
             try {
                 const response = await axios.get(
-                    `http://localhost:3001/api/v1/auth/user/session`,
+                    `${BACKEND_URL}/api/v1/auth/user/session`,
                     { withCredentials: true }
                 );
 
@@ -46,7 +47,7 @@ export default function Courses() {
     useEffect(() => {
         async function getCourses() {
             try {
-                const response = await axios.get("http://localhost:3001/api/v1/courses/all");
+                const response = await axios.get(`${BACKEND_URL}/api/v1/courses/all`); 
                 setCourses(response.data.COURSES);
             } catch (error) {
                 console.error("Error fetching courses:", error);

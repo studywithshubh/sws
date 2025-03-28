@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import { Input } from "@/components/ui/Input";
 import { useState } from "react";
 import axios from "axios";
+import { BACKEND_URL } from "../config";
 
 export default function Signup() {
     const router = useRouter();
@@ -31,7 +32,7 @@ export default function Signup() {
     const handleSignup = async () => {
         setLoading(true);
         try {
-            const response = await axios.post('http://localhost:3001/api/v1/auth/user/signup', formData);
+            const response = await axios.post(`${BACKEND_URL}/api/v1/auth/user/signup`, formData);
             showNotification(response.data.message || 'Signup successful! Please check your email for OTP.', 'success');
             setShowOtpInput(true);
         } catch (error: unknown) {
@@ -48,7 +49,7 @@ export default function Signup() {
     const handleVerifyOtp = async () => {
         setLoading(true);
         try {
-            const response = await axios.post('http://localhost:3001/api/v1/auth/user/verify-mail', {
+            const response = await axios.post(`${BACKEND_URL}/api/v1/auth/user/verify-mail`, {
                 email: formData.email,
                 otpEntered: otp
             });

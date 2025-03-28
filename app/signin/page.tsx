@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import { Input } from "@/components/ui/Input";
 import { useState } from "react";
 import axios from "axios";
+import { BACKEND_URL } from "../config";
 
 export default function Signin() {
     const router = useRouter();
@@ -27,7 +28,7 @@ export default function Signin() {
     const handleSignin = async () => {
         setLoading(true);
         try {
-            const response = await axios.post('http://localhost:3001/api/v1/auth/user/signin', formData, {
+            const response = await axios.post(`${BACKEND_URL}/api/v1/auth/user/signin`, formData, {
                 withCredentials: true // Important for cookie-based auth
             });
 
