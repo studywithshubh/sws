@@ -16,7 +16,8 @@ export const DashboardNavbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
-    // Check auth status
+    console.log(isLoggedIn);
+    
     useEffect(() => {
         const checkAuthStatus = async () => {
             try {
