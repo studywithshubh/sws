@@ -5,6 +5,7 @@ import { Button } from "./button";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { BACKEND_URL } from "@/app/config";
 
 interface CourseCardProps {
     id: number;
@@ -57,7 +58,7 @@ export const CourseCard = ({
         try {
             // 1. Initiate payment with backend
             const response = await axios.post(
-                'http://localhost:3001/api/v1/sws/payment/initiate',
+                `${BACKEND_URL}/api/v1/sws/payment/initiate`,
                 {
                     courseId: id,
                     userId: userId,
@@ -87,7 +88,7 @@ export const CourseCard = ({
                         try {
                             // 4. Verify payment with backend
                             await axios.post(
-                                `http://localhost:3001/api/v1/sws/payment/verify/${paymentId}`,
+                                `${BACKEND_URL}/api/v1/sws/payment/verify/${paymentId}`,
                                 {
                                     razorpay_payment_id: response.razorpay_payment_id,
                                     razorpay_order_id: response.razorpay_order_id,
