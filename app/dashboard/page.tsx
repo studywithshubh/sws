@@ -5,13 +5,15 @@ import { useEffect, useState } from "react";
 import { DashboardNavbar } from "@/components/DashboardNavbar";
 import Loader from "@/components/ui/Loader";
 import { BACKEND_URL } from "../config";
+import { Button } from "@/components/ui/button";
 
 export default function Dashboard() {
     const router = useRouter();
-    const [username, setUsername] = useState("");
     const [loading, setLoading] = useState(true);
     const [courses, setCourses] = useState([]);
     const [authChecked, setAuthChecked] = useState(false);
+
+    console.log(`is it loading: ${loading}`); // this is did for preventing the build error during deployment
 
     // First check authentication
     useEffect(() => {
@@ -50,7 +52,6 @@ export default function Dashboard() {
                 ]);
 
                 setCourses(coursesRes.data.userCourses);
-                setUsername(userRes.data.finalUserData.username);
             } catch (error) {
                 console.error("Data fetch error:", error);
                 // If unauthorized, redirect to login
@@ -71,12 +72,17 @@ export default function Dashboard() {
                 <DashboardNavbar/>
             </div>
 
-            <div className="flex justify-start mt-10 text-xl ml-5 md:text-4xl">
-                {loading ? <Loader/> : <div>welcome {username}!</div>}
-            </div>
-
             <div>
-                {JSON.stringify(courses)}
+                {courses.length === 0 ? (
+                    <div className="flex flex-col justify-center space-y-8 items-center mt-30">
+                        <div className="text-3xl font-bold text-amber-200">
+                            You haven't purchased any courses yet!!
+                        </div>
+                        <div>
+                            <Button text="Buy a Course" variant="purple_variant" onClick={() => router.push('/courses')} />
+                        </div>
+                    </div>
+                ) : JSON.stringify(courses)}
             </div>
         </div>
     );

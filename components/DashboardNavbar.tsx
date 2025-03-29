@@ -14,13 +14,15 @@ export const DashboardNavbar = () => {
     const router = useRouter();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
-    const [role , setRole] = useState("");
-    const [email , setEmail] = useState("");
+    const [role, setRole] = useState("");
+    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
 
 
-    console.log(`Am i LoggedIn: ${isLoggedIn}`);
+    console.log(`is there any error: ${error}`); // this is did for preventing the build error during deployment
     
     useEffect(() => {
         const checkAuthStatus = async () => {
@@ -51,16 +53,48 @@ export const DashboardNavbar = () => {
     }, []);
 
     // fetching user data from /me
+
     useEffect(() => {
-        async function getUserData() {
-            const response = await axios.get(`${BACKEND_URL}/api/v1/auth/user/me`, {
-                withCredentials: true,
-            });
-            setRole(response.data.finalUserData.role);
-            setEmail(response.data.finalUserData.email);
+        if (isLoggedIn) {
+            async function getUserData() {
+                try {
+                    setLoading(true);
+                    const response = await axios.get(`${BACKEND_URL}/api/v1/auth/user/me`, {
+                        withCredentials: true,
+                    });
+                    setRole(response.data.finalUserData.role);
+                    setEmail(response.data.finalUserData.email);
+                    setUsername(response.data.finalUserData.username);
+                } catch (err) {
+                    console.error("Failed to fetch user data:", err);
+                    setError("Failed to fetch user data.");
+
+                } finally {
+                    setLoading(false);
+                }
+            }
+            getUserData();
         }
-        getUserData();
-    } , [])
+    }, [isLoggedIn]);
+
+    // useEffect(() => {
+    //     async function getUserData() {
+    //         try {
+    //             setLoading(true); // Start loading
+    //             const response = await axios.get(`${BACKEND_URL}/api/v1/auth/user/me`, {
+    //                 withCredentials: true,
+    //             });
+    //             setRole(response.data.finalUserData.role);
+    //             setEmail(response.data.finalUserData.email);
+    //             setUsername(response.data.finalUserData.username);
+    //         } catch (error) {
+    //             console.log(error);
+    //         } finally {
+    //             setLoading(false); // Stop loading after success or failure
+    //         }
+    //     }
+    //     getUserData();
+    // }, [])
 
     // Logout function
     const handleLogout = async () => {
@@ -83,6 +117,15 @@ export const DashboardNavbar = () => {
                     <Image src="/swsLogo.png" alt="SWS logo" width={192} height={192} className="w-32 md:w-48" />
                 </div>
 
+                {!loading ? (
+                    <div className="md:text-2xl">
+                        Welcome {username}!
+                    </div>
+                ) : (
+                    <div className="text-red-500">Not logged in</div>
+                )}
+
+
                 {/* Menu */}
                 <div className="mr-6 relative" ref={menuRef}>
                     <Button text="Menu" variant="general_1" endIcon={<Dropdown />} onClick={() => setMenuOpen(!menuOpen)} />
@@ -101,7 +144,7 @@ export const DashboardNavbar = () => {
                                     <div className="flex m-8 flex-col justify-center items-center space-x-3">
                                         <div className="flex justify-center space-x-2">
                                             <div>
-                                                <User/>
+                                                <User />
                                             </div>
                                             <div>
                                                 {role}
