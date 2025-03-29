@@ -6,6 +6,7 @@ import { DashboardNavbar } from "@/components/DashboardNavbar";
 import { BACKEND_URL } from "../config";
 import { Button } from "@/components/ui/button";
 
+
 export default function Dashboard() {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
