@@ -49,7 +49,7 @@ export default function Dashboard() {
                         withCredentials: true
                     })
                 ]);
-
+                console.log(userRes);
                 setCourses(coursesRes.data.userCourses);
             } catch (error) {
                 console.error("Data fetch error:", error);
@@ -75,7 +75,7 @@ export default function Dashboard() {
                 {courses.length === 0 ? (
                     <div className="flex flex-col justify-center space-y-8 items-center mt-30">
                         <div className="text-3xl font-bold text-amber-200">
-                            You haven't purchased any courses yet!!
+                            You haven&apos;t purchased any course yet!
                         </div>
                         <div>
                             <Button text="Buy a Course" variant="purple_variant" onClick={() => router.push('/courses')} />
