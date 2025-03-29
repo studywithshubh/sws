@@ -18,16 +18,14 @@ export default function Dashboard() {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                // First verify session
-                await axios.get(`${BACKEND_URL}/api/v1/auth/user/session`, {
-                    withCredentials: true,
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
+                console.log('Checking auth with credentials:', { withCredentials: true });
+                const response = await axios.get(`${BACKEND_URL}/api/v1/auth/user/session`, {
+                    withCredentials: true
                 });
+                console.log('Auth check response:', response.data);
                 setAuthChecked(true);
             } catch (error) {
-                console.error("Auth error:", error);
+                console.error(`Full auth error: ${error}`);
                 router.push('/signin');
             }
         };
