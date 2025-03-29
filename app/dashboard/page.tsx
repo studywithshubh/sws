@@ -3,7 +3,6 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DashboardNavbar } from "@/components/DashboardNavbar";
-import Loader from "@/components/ui/Loader";
 import { BACKEND_URL } from "../config";
 import { Button } from "@/components/ui/button";
 
@@ -42,11 +41,8 @@ export default function Dashboard() {
         const fetchData = async () => {
             try {
                 // Make parallel requests
-                const [coursesRes, userRes] = await Promise.all([
+                const [coursesRes] = await Promise.all([
                     axios.get(`${BACKEND_URL}/api/v1/auth/user/my-courses`, {
-                        withCredentials: true
-                    }),
-                    axios.get(`${BACKEND_URL}/api/v1/auth/user/me`, {
                         withCredentials: true
                     })
                 ]);
@@ -76,7 +72,7 @@ export default function Dashboard() {
                 {courses.length === 0 ? (
                     <div className="flex flex-col justify-center space-y-8 items-center mt-30">
                         <div className="text-3xl font-bold text-amber-200">
-                            You haven't purchased any courses yet!!
+                            You haven&apos;t bought any courses yet!
                         </div>
                         <div>
                             <Button text="Buy a Course" variant="purple_variant" onClick={() => router.push('/courses')} />
