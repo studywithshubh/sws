@@ -3,6 +3,7 @@
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 export const InfiniteMovingCards = ({
@@ -28,14 +29,14 @@ export const InfiniteMovingCards = ({
         function addAnimation() {
             if (containerRef.current && scrollerRef.current) {
                 const scrollerContent = Array.from(scrollerRef.current.children);
-    
+
                 scrollerContent.forEach((item) => {
                     const duplicatedItem = item.cloneNode(true);
                     if (scrollerRef.current) {
                         scrollerRef.current.appendChild(duplicatedItem);
                     }
                 });
-    
+
                 // getDirection();
                 // getSpeed();
                 setStart(true);
@@ -94,24 +95,18 @@ export const InfiniteMovingCards = ({
             >
                 {items.map((item, idx) => (
                     <li
+                        onClick={() => redirect(`/courses`)}
                         key={idx}
-                        className="relative w-[180px] sm:w-[200px] md:w-[240px] lg:w-[280px] xl:w-[320px] flex-shrink-0 rounded-lg md:rounded-xl"
+                        className="relative cursor-pointer w-[180px] sm:w-[200px] md:w-[240px] lg:w-[280px] xl:w-[320px] flex-shrink-0 rounded-lg md:rounded-xl"
                     >
-                        <Link
-                            href="https://github.com/studywithshubh"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block"
-                        >
-                            <Image
-                                src={item.imageUrl}
-                                alt={`Card ${idx + 1}`}
-                                width={320}
-                                height={180}
-                                className="w-full h-auto aspect-video rounded-lg md:rounded-xl border border-primary/10 md:border-2 object-cover transition-all duration-300 hover:-translate-y-1 md:hover:-translate-y-2 hover:border-primary/20"
-                                sizes="(max-width: 640px) 180px, (max-width: 768px) 200px, (max-width: 1024px) 240px, (max-width: 1280px) 280px, 320px"
-                            />
-                        </Link>
+                        <Image
+                            src={item.imageUrl}
+                            alt={`Card ${idx + 1}`}
+                            width={320}
+                            height={180}
+                            className="w-full h-auto aspect-video rounded-lg md:rounded-xl border border-primary/10 md:border-2 object-cover transition-all duration-300 hover:-translate-y-1 md:hover:-translate-y-2 hover:border-primary/20"
+                            sizes="(max-width: 640px) 180px, (max-width: 768px) 200px, (max-width: 1024px) 240px, (max-width: 1280px) 280px, 320px"
+                        />
                     </li>
                 ))}
             </ul>
