@@ -30,9 +30,14 @@ export default function ForgotPassword() {
             const response = await axios.post(`${BACKEND_URL}/api/v1/auth/user/send-otp-for-forgot-password`, { email });
             showNotification(response.data.message, 'success');
             setStep(2);
-        } catch (error: any) {
-            const errorMessage = error.response?.data?.message || "Something went wrong. Please try again later.";
-            showNotification(errorMessage, 'error');
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                showNotification(error.response?.data?.message || 'Something went wrong. Please try again later.', 'error');
+            } else {
+                showNotification('An unexpected error occurred.', 'error');
+            }
+            // const errorMessage = error.response?.data?.message || "Something went wrong. Please try again later.";
+            // showNotification(errorMessage, 'error');
         } finally {
             setLoading(false);
         }
@@ -58,9 +63,14 @@ export default function ForgotPassword() {
             });
             showNotification(response.data.message, 'success');
             setTimeout(() => router.push('/signin'), 2000);
-        } catch (error: any) {
-            const errorMessage = error.response?.data?.message || "Something went wrong. Please try again later.";
-            showNotification(errorMessage, 'error');
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                showNotification(error.response?.data?.message || 'Something went wrong. Please try again later.', 'error');
+            } else {
+                showNotification('An unexpected error occurred.', 'error');
+            }
+            // const errorMessage = error.response?.data?.message || "Something went wrong. Please try again later.";
+            // showNotification(errorMessage, 'error');
         } finally {
             setLoading(false);
         }
