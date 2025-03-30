@@ -11,6 +11,9 @@ import { BACKEND_URL } from "@/app/config";
 import { Dropdown } from "@/icons/Dropdown";
 import { Right } from "@/icons/Right";
 import { Settings } from "@/icons/Settings";
+import { Bookmark } from "@/icons/Bookmark";
+import { GraduationCap } from "@/icons/GraduationCap";
+import { Download } from "@/icons/Download";
 
 export const DashboardNavbar = () => {
     const router = useRouter();
@@ -24,6 +27,7 @@ export const DashboardNavbar = () => {
     const [username, setUsername] = useState("");
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [joined, setJoined] = useState("");
+    const [contactNumber, setContactNumber] = useState("");
 
 
     console.log(`is there any error: ${error}`); // this is did for preventing the build error during deployment
@@ -70,6 +74,7 @@ export const DashboardNavbar = () => {
                     setEmail(response.data.finalUserData.email);
                     setUsername(response.data.finalUserData.username);
                     setJoined(response.data.finalUserData.userAddedAt.split("T")[0].split("-").reverse().join("-"));
+                    setContactNumber(response.data.finalUserData.contactNumber);
                 } catch (err) {
                     console.error("Failed to fetch user data:", err);
                     setError("Failed to fetch user data.");
@@ -157,13 +162,20 @@ export const DashboardNavbar = () => {
                                         <div>
                                             {email}
                                         </div>
+                                        <div className="text-gray-400">
+                                            {contactNumber}
+                                        </div>
                                     </div>
-                                    <div className="p-2 text-white hover:bg-gray-700 rounded-md cursor-not-allowed">Bookmarks</div>
-                                    <div onClick={() => router.push("/courses")} className="p-2 text-white hover:bg-gray-700 rounded-md cursor-pointer">
+                                    <div className="p-2 text-white hover:bg-gray-700 rounded-md cursor-not-allowed flex transition-all duration-500"> <div className="mr-2"> <Bookmark/> </div> Bookmarks</div>
+                                    <div className="p-2 text-white hover:bg-gray-700 rounded-md cursor-not-allowed flex transition-all duration-500"> <div className="mr-2"> <Download/> </div> Downloads</div>
+                                    <div onClick={() => router.push("/courses")} className="p-2 text-white hover:bg-gray-700 rounded-md cursor-pointer transition-all duration-500 flex">
+                                        <div className="mr-2">
+                                            <GraduationCap/>
+                                        </div>
                                         Buy a Course
                                     </div>
                                     <div
-                                        className="p-2 text-white hover:bg-gray-700 rounded-md cursor-pointer flex justify-between items-center"
+                                        className="p-2 transition-all duration-500 text-white hover:bg-gray-700 rounded-md cursor-pointer flex justify-between items-center"
                                         onClick={() => setSettingsOpen(!settingsOpen)}
                                     >
                                         <div className="flex items-center">
@@ -176,7 +188,7 @@ export const DashboardNavbar = () => {
                                         </div>
                                         <Right/>
                                     </div>
-                                    <div className="p-2 text-red-500 hover:bg-red-600 hover:text-black rounded-md cursor-pointer" onClick={handleLogout}>
+                                    <div className="p-2 text-red-500 font-bold hover:bg-red-600 transition-all duration-500 hover:text-white rounded-md cursor-pointer" onClick={handleLogout}>
                                         Logout
                                     </div>
                                     <div className="mt-4 flex justify-center items-center text-gray-400">
@@ -203,7 +215,7 @@ export const DashboardNavbar = () => {
                                 <div className="px-4 py-2">
                                     <div className="pt-2 border-t border-gray-700">
                                         <button
-                                            className="w-full text-left p-2 text-white hover:bg-gray-700 rounded-md cursor-pointer"
+                                            className="w-full text-left p-2 transition-all duration-500 text-white hover:bg-gray-700 rounded-md cursor-pointer"
                                             onClick={() => router.push("/forgot-password")}
                                         >
                                             Change Password

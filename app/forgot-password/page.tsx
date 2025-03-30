@@ -130,28 +130,32 @@ export default function ForgotPassword() {
                     </div>
 
                     {step === 1 ? (
-                        <div className="w-full max-w-md space-y-4">
-                            <Input
-                                name="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="w-full font-bold"
-                                type="email"
-                                placeholder="Enter Your Email"
-                            />
-                            <Button
-                                onClick={handleSendOtp}
-                                disabled={loading}
-                                variant="blue_variant"
-                                text={loading ? 'Sending OTP...' : 'Send OTP'}
-                            >
-                            </Button>
-                            <Button
-                                text="Back to Login"
-                                variant="general_1"
-                                onClick={() => router.push('/signin')}
-                            >
-                            </Button>
+                        <div className="w-full flex justify-center items-center max-w-md space-y-4">
+                            <div className="space-y-6">
+                                <Input
+                                    name="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full font-bold"
+                                    type="email"
+                                    placeholder="Enter Your Email"
+                                />
+                                <div className="flex space-x-5">
+                                    <Button
+                                        onClick={handleSendOtp}
+                                        disabled={loading}
+                                        variant="blue_variant"
+                                        text={loading ? 'Sending OTP...' : 'Send OTP'}
+                                    >
+                                    </Button>
+                                    <Button
+                                        text="Back to Login"
+                                        variant="general_1"
+                                        onClick={() => router.push('/signin')}
+                                    >
+                                    </Button>
+                                </div>
+                            </div>
                         </div>
                     ) : (
                         <div className="w-full max-w-md space-y-4">
