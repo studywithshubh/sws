@@ -140,7 +140,7 @@ export const CourseCard = ({
 
     return (
         <motion.div
-            className="relative w-100 h-100 rounded-2xl overflow-hidden group"
+            className="relative w-100 h-110 rounded-2xl overflow-hidden group"
             whileHover={{ scale: 1.02 }}
         >
             {/* Glassmorphism background effect */}

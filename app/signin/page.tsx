@@ -151,6 +151,11 @@ export default function Signin() {
                             SignUp
                         </span>
                     </p>
+                    <div className="flex justify-center transition-all duration-500 hover:text-blue-400 font-bold">
+                        <div className="cursor-pointer" onClick={() => router.push("/forgot-password")}>
+                            Forgot Password?
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -9,6 +9,8 @@ import { User } from "@/icons/User";
 import { motion, AnimatePresence } from "framer-motion";
 import { BACKEND_URL } from "@/app/config";
 import { Dropdown } from "@/icons/Dropdown";
+import { Right } from "@/icons/Right";
+import { Settings } from "@/icons/Settings";
 
 export const DashboardNavbar = () => {
     const router = useRouter();
@@ -20,10 +22,12 @@ export const DashboardNavbar = () => {
     const [role, setRole] = useState("");
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
+    const [settingsOpen, setSettingsOpen] = useState(false);
+    const [joined, setJoined] = useState("");
 
 
     console.log(`is there any error: ${error}`); // this is did for preventing the build error during deployment
-    
+
     useEffect(() => {
         const checkAuthStatus = async () => {
             try {
@@ -65,6 +69,7 @@ export const DashboardNavbar = () => {
                     setRole(response.data.finalUserData.role);
                     setEmail(response.data.finalUserData.email);
                     setUsername(response.data.finalUserData.username);
+                    setJoined(response.data.finalUserData.userAddedAt.split("T")[0].split("-").reverse().join("-"));
                 } catch (err) {
                     console.error("Failed to fetch user data:", err);
                     setError("Failed to fetch user data.");
@@ -118,13 +123,12 @@ export const DashboardNavbar = () => {
                 </div>
 
                 {!loading ? (
-                    <div className="md:text-2xl">
+                    <div className="md:text-2xl animate-bounce hover:underline">
                         Welcome {username}!
                     </div>
                 ) : (
                     <div className="text-red-500">Not logged in</div>
                 )}
-
 
                 {/* Menu */}
                 <div className="mr-6 relative" ref={menuRef}>
@@ -158,9 +162,58 @@ export const DashboardNavbar = () => {
                                     <div onClick={() => router.push("/courses")} className="p-2 text-white hover:bg-gray-700 rounded-md cursor-pointer">
                                         Buy a Course
                                     </div>
-                                    <div className="p-2 text-white hover:bg-gray-700 rounded-md cursor-not-allowed">Settings</div>
+                                    <div
+                                        className="p-2 text-white hover:bg-gray-700 rounded-md cursor-pointer flex justify-between items-center"
+                                        onClick={() => setSettingsOpen(!settingsOpen)}
+                                    >
+                                        <div className="flex items-center">
+                                            <div className="mr-2">
+                                                <Settings />
+                                            </div>
+                                            <div>
+                                                Settings
+                                            </div>
+                                        </div>
+                                        <Right/>
+                                    </div>
                                     <div className="p-2 text-red-500 hover:bg-red-600 hover:text-black rounded-md cursor-pointer" onClick={handleLogout}>
                                         Logout
+                                    </div>
+                                    <div className="mt-4 flex justify-center items-center text-gray-400">
+                                        Member Since: {joined}
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    {/* Settings Dropdown */}
+                    <AnimatePresence>
+                        {settingsOpen && (
+                            <motion.div
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                transition={{ duration: 0.2 }}
+                                className="absolute right-full top-0 mt-0 w-56 origin-top-right bg-slate-800 divide-y divide-gray-700 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
+                            >
+                                <div className="px-4 py-3">
+                                    <h3 className="text-lg font-medium text-white">Account Settings</h3>
+                                </div>
+                                <div className="px-4 py-2">
+                                    <div className="pt-2 border-t border-gray-700">
+                                        <button
+                                            className="w-full text-left p-2 text-white hover:bg-gray-700 rounded-md cursor-pointer"
+                                            onClick={() => router.push("/forgot-password")}
+                                        >
+                                            Change Password
+                                        </button>
+                                        {/* <button className="w-full text-left p-2 text-white hover:bg-gray-700 rounded-md cursor-not-allowed opacity-50">
+                                            Email Settings
+                                        </button>
+                                        <button className="w-full text-left p-2 text-white hover:bg-gray-700 rounded-md cursor-not-allowed opacity-50">
+                                            Notification Preferences
+                                        </button> */}
                                     </div>
                                 </div>
                             </motion.div>
