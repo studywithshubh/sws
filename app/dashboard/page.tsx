@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { DashboardNavbar } from "@/components/DashboardNavbar";
 import { BACKEND_URL } from "../config";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 interface Course {
   id: number;
@@ -50,7 +51,7 @@ export default function Dashboard() {
         setUserCourses(response.data.userCourses);
       } catch (error) {
         console.error("Failed to fetch user courses:", error);
-        setError("Failed to load courses. Please try again.");
+        setError("Failed to load courses. Please Login!");
       } finally {
         setLoading(false);
       }
@@ -82,7 +83,7 @@ export default function Dashboard() {
   const fetchFolderContent = async (folderId: number) => {
     try {
       const response = await axios.get(`${BACKEND_URL}/api/v1/content/${folderId}/children`);
-      
+
       // Update the course content structure with the new children
       setCourseContent(prev => {
         const updateContent = (contents: Content[]): Content[] => {
@@ -166,7 +167,7 @@ export default function Dashboard() {
             {item.title}
           </h3>
           {item.description && <p className="text-gray-400 mt-1">{item.description}</p>}
-          
+
           {item.videoUrl && (
             <div className="mt-4 aspect-video bg-black rounded-lg overflow-hidden">
               <video controls className="w-full h-full">
@@ -175,7 +176,7 @@ export default function Dashboard() {
               </video>
             </div>
           )}
-          
+
           {item.notesUrl && (
             <div className="mt-4 h-64 bg-gray-900 rounded-lg overflow-hidden">
               <iframe
@@ -202,7 +203,7 @@ export default function Dashboard() {
     return (
       <div className="h-screen bg-dashboardBgColor text-white flex flex-col items-center justify-center">
         <div className="text-red-500 mb-4">{error}</div>
-        <Button variant="purple_variant" onClick={() => window.location.reload()} text="Try Again" />
+        <Button variant="purple_variant" onClick={() => { router.push("/signin") }} text="Sign In" />
       </div>
     );
   }
@@ -210,16 +211,16 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-dashboardBgColor text-white">
       <DashboardNavbar />
-      
+
       <div className="p-8">
         {!selectedCourse ? (
           <>
             {userCourses.length === 0 ? (
               <div className="flex flex-col items-center justify-center mt-20 space-y-8">
                 <h1 className="text-3xl font-bold text-amber-200">
-                  You haven't purchased any courses yet!
+                  You haven&apos;t created any courses yet!
                 </h1>
-                <Button 
+                <Button
                   variant="purple_variant"
                   onClick={() => router.push('/courses')}
                   text="Browse Courses"
@@ -234,33 +235,32 @@ export default function Dashboard() {
                     <div
                       key={course.id}
                       className="p-6 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
-                      onClick={() => fetchCourseContent(course.id)}
+                      // onClick={() => fetchCourseContent(course.id)}
                     >
-                      <div className="h-40 mb-4 overflow-hidden rounded-lg bg-gray-700 flex items-center justify-center">
+                      <div onClick={() => fetchCourseContent(course.id)} className="h-60 mb-4 overflow-hidden rounded-lg bg-gray-700 flex items-center justify-center">
                         {course.imageUrl ? (
-                          <img 
-                            src={course.imageUrl} 
+                          <Image
+                            src={course.imageUrl}
                             alt={course.title}
-                            className="w-full h-full object-cover"
+                            width="400"
+                            height="300"
                           />
                         ) : (
                           <div className="text-gray-400">No image available</div>
                         )}
                       </div>
-                      <h2 className="text-xl font-bold">{course.title}</h2>
-                      {/* <p className="text-gray-400 mt-2">
-                        {course.discountedPrice ? (
-                          <>
-                            <span className="line-through mr-2">₹{course.price}</span>
-                            <span className="text-green-400">₹{course.discountedPrice}</span>
-                          </>
-                        ) : (
-                          `₹${course.price}`
-                        )}
-                      </p> */}
+                      <h2 className="text-xl text-center font-bold">{course.title}</h2>
+                    
+                      <div className="flex justify-center mt-2">
+                        <Button variant="general_2" text="View Details" onClick={() => {window.open(course.notionUrl)}} />
+                      </div>
+
                     </div>
+                    
                   ))}
+                  
                 </div>
+                
               </div>
             )}
           </>
@@ -278,7 +278,7 @@ export default function Dashboard() {
               </button>
               <h1 className="text-2xl font-bold">{selectedCourse.title}</h1>
             </div>
-            
+
             {loading ? (
               <div className="flex justify-center py-20">
                 <div>Loading content...</div>
