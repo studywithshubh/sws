@@ -3,22 +3,22 @@ import { InfiniteMovingCards } from "./moving-cards"
 const heroItems = [
     {
         imageUrl:
-            '/swsLogo.png',
+            'https://swsimage.vercel.app/ip12Cohort.png',
     },
     {
-        imageUrl: '/SWSBGREMOVEDLOGO.png',
+        imageUrl: 'https://swsimage.vercel.app/cs12cohort.png',
     },
     {
         imageUrl:
-            '/coursesImages/cs12cohortTN.png',
+            'https://swsimage.vercel.app/cs11-previous.png',
     },
     {
-        imageUrl: 'https://www.studywithshubh.tech/courseThumbnails/ipMysql.png',
+        imageUrl: 'https://swsimage.vercel.app/ipMysql11-previous.png',
     },
 
     {
         imageUrl:
-            'https://www.studywithshubh.tech/courseThumbnails/csPython.png',
+            'https://swsimage.vercel.app/ComingSoon.png',
     },
 ];
 
