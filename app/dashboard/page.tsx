@@ -136,7 +136,7 @@ export default function Dashboard() {
       return (
         <div
           key={item.id}
-          className="p-4 bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors"
+          className="p-4 bg-slate-800 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors"
           onClick={() => fetchFolderContent(item.id)}
         >
           <h3 className="text-lg font-semibold flex items-center gap-2">
@@ -149,12 +149,15 @@ export default function Dashboard() {
           <div className="text-xs text-gray-500 mt-2">
             {item.children?.length || 0} items inside
           </div>
+          <div className="flex justify-center">
+            <Image src="/folderLogoImg.png" alt="folderImg" width="250" height="250" />
+          </div>
         </div>
       );
     } else {
       return (
-        <div key={item.id} className="p-4 bg-gray-800 rounded-lg">
-          <h3 className="text-lg font-semibold flex items-center gap-2">
+        <div key={item.id} className="p-4 cursor-pointer hover:scale-105 transition-all duration-300 bg-cyan-800 rounded-lg">
+          <h3 className="text-lg justify-center font-semibold flex items-center gap-2">
             {item.videoUrl ? (
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -165,26 +168,27 @@ export default function Dashboard() {
               </svg>
             )}
             {item.title}
+
           </h3>
-          {item.description && <p className="text-gray-400 mt-1">{item.description}</p>}
+          {item.description && <p className="text-gray-400 text-center mt-1">{item.description}</p>}
 
           {item.videoUrl && (
             <div className="mt-4 aspect-video bg-black rounded-lg overflow-hidden">
-              <video controls className="w-full h-full">
-                <source src={item.videoUrl} type="video/mp4" />
-                Your browser does not support videos
-              </video>
+              <iframe src={item.videoUrl} allowFullScreen className="w-full h-full border-none" sandbox="allow-same-origin allow-scripts" />
             </div>
           )}
 
           {item.notesUrl && (
-            <div className="mt-4 h-64 bg-gray-900 rounded-lg overflow-hidden">
-              <iframe
-                src={item.notesUrl}
-                className="w-full h-full border-none"
-                title={item.title}
-              />
+            <div className="flex justify-center mt-4">
+              <Button variant="general_1" onClick={() => window.open(item.notesUrl)} text="Notes" />
             </div>
+            // <div className="mt-4 h-64 bg-gray-900 rounded-lg overflow-hidden">
+            //   <iframe
+            //     src={item.notesUrl}
+            //     className="w-full h-full border-none"
+            //     title={item.title}
+            //   />
+            // </div>
           )}
         </div>
       );
@@ -218,7 +222,7 @@ export default function Dashboard() {
             {userCourses.length === 0 ? (
               <div className="flex flex-col items-center justify-center mt-20 space-y-8">
                 <h1 className="text-3xl font-bold text-amber-200">
-                  You haven&apos;t created any courses yet!
+                  You haven&apos;t Purchased any courses yet!
                 </h1>
                 <Button
                   variant="purple_variant"
@@ -235,7 +239,7 @@ export default function Dashboard() {
                     <div
                       key={course.id}
                       className="p-6 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
-                      // onClick={() => fetchCourseContent(course.id)}
+                    // onClick={() => fetchCourseContent(course.id)}
                     >
                       <div onClick={() => fetchCourseContent(course.id)} className="h-60 mb-4 overflow-hidden rounded-lg bg-gray-700 flex items-center justify-center">
                         {course.imageUrl ? (
@@ -250,17 +254,17 @@ export default function Dashboard() {
                         )}
                       </div>
                       <h2 className="text-xl text-center font-bold">{course.title}</h2>
-                    
+
                       <div className="flex justify-center mt-2">
-                        <Button variant="general_2" text="View Details" onClick={() => {window.open(course.notionUrl)}} />
+                        <Button variant="general_2" text="View Details" onClick={() => { window.open(course.notionUrl) }} />
                       </div>
 
                     </div>
-                    
+
                   ))}
-                  
+
                 </div>
-                
+
               </div>
             )}
           </>
