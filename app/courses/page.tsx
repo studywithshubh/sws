@@ -5,7 +5,8 @@ import { motion } from "framer-motion";
 import { CourseCard } from "@/components/ui/CourseCard";
 import { Navbar } from "@/components/Navbar";
 import { BACKEND_URL } from "../config";
-
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 interface CourseCardProps {
     id: number;
@@ -22,6 +23,7 @@ export default function Courses() {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [userId, setUserId] = useState('');
+    const router = useRouter();
 
     useEffect(() => {
         async function getUserId() {
@@ -30,11 +32,7 @@ export default function Courses() {
                     `${BACKEND_URL}/api/v1/auth/user/session`,
                     { withCredentials: true }
                 );
-
                 setUserId(response.data.message.user.id);
-                // console.log(); log and test
-
-                
             } catch (error) {
                 console.error("Error fetching userId:", error);
             } finally {
@@ -42,15 +40,16 @@ export default function Courses() {
             }
         }
         getUserId();
-    } , []);
+    }, []);
 
     useEffect(() => {
         async function getCourses() {
             try {
                 const response = await axios.get(`${BACKEND_URL}/api/v1/courses/all`); 
-                setCourses(response.data.COURSES);
+                setCourses(response.data.COURSES || []);
             } catch (error) {
                 console.error("Error fetching courses:", error);
+                setCourses([]);
             } finally {
                 setLoading(false);
             }
@@ -94,7 +93,7 @@ export default function Courses() {
                     <div className="flex justify-center items-center h-64">
                         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-400"></div>
                     </div>
-                ) : (
+                ) : courses.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {courses.map((course: CourseCardProps) => (
                             <CourseCard
@@ -109,6 +108,31 @@ export default function Courses() {
                                 couponCode={course.couponCode}
                             />
                         ))}
+                    </div>
+                ) : (
+                    <div className="flex flex-col items-center justify-center py-20 space-y-6">
+                        <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-300">
+                            Courses Coming Soon!
+                        </h2>
+                        <p className="text-gray-400 text-center max-w-md">
+                            We're working hard to bring you amazing learning content. 
+                            Do join and Check back later.
+                        </p>
+                        <div className="flex space-x-4 mt-4">
+                            <Button 
+                                variant="red_variant" 
+                                onClick={() => router.push('/signup')}
+                                text="Join Now"
+                            >
+                            </Button>
+                            <Button 
+                                variant="general_1"
+                                onClick={() => router.push('/')}
+                                text="Return Home"
+                            >
+                                
+                            </Button>
+                        </div>
                     </div>
                 )}
             </div>

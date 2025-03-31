@@ -172,7 +172,7 @@ export const DashboardNavbar = () => {
                                         <div className="mr-2">
                                             <GraduationCap/>
                                         </div>
-                                        Buy a Course
+                                        Browse Courses
                                     </div>
                                     <div
                                         className="p-2 transition-all duration-500 text-white hover:bg-gray-700 rounded-md cursor-pointer flex justify-between items-center"

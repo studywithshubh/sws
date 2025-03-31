@@ -227,7 +227,7 @@ export default function Dashboard() {
                 <Button
                   variant="purple_variant"
                   onClick={() => router.push('/courses')}
-                  text="Browse Courses"
+                  text="Buy a Course"
                 >
                 </Button>
               </div>
