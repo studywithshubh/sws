@@ -1,1 +1,1 @@
-export const BACKEND_URL = "https://swsbetest.vercel.app";
+export const BACKEND_URL = "https://swsbe-vercel.vercel.app";
