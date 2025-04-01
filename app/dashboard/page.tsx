@@ -221,7 +221,7 @@ export default function Dashboard() {
           <>
             {userCourses.length === 0 ? (
               <div className="flex flex-col items-center justify-center mt-20 space-y-8">
-                <h1 className="text-3xl font-bold text-amber-200">
+                <h1 className=" md:text-3xl font-bold text-amber-200">
                   You haven&apos;t Purchased any courses yet!
                 </h1>
                 <Button
