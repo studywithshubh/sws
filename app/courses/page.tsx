@@ -115,7 +115,7 @@ export default function Courses() {
                             Courses Coming Soon!
                         </h2>
                         <p className="text-gray-400 text-center max-w-md">
-                            We're working hard to bring you amazing learning content. 
+                            We are working hard to bring you amazing learning content. 
                             Do join and Check back later.
                         </p>
                         <div className="flex space-x-4 mt-4">
