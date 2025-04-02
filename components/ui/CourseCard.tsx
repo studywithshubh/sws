@@ -16,7 +16,6 @@ interface CourseCardProps {
     price: number;
     discountedPrice?: number;
     couponCode?: string;
-    isLoggedIn: boolean; // Added prop to check if user is logged in
 }
 
 interface RazorpayPaymentResponse {
@@ -39,16 +38,33 @@ export const CourseCard = ({
     notionUrl,
     price,
     discountedPrice,
-    couponCode,
-    isLoggedIn
+    couponCode
 }: CourseCardProps) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const router = useRouter();
 
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [contact, setContact] = useState("");
+
+    useEffect(() => {
+        const checkAuthStatus = async () => {
+            try {
+                const response = await axios.get(`${BACKEND_URL}/api/v1/auth/user/session`, {
+                    withCredentials: true,
+                });
+                setIsLoggedIn(response.status === 200);
+            } catch (error) {
+                console.error("Auth check failed:", error);
+                setIsLoggedIn(false);
+            } finally {
+                setLoading(false);
+            }
+        };
+        checkAuthStatus();
+    }, []);
 
     useEffect(() => {
         if (isLoggedIn) {
