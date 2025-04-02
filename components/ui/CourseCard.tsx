@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "./button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { BACKEND_URL } from "@/app/config";
@@ -16,6 +16,7 @@ interface CourseCardProps {
     price: number;
     discountedPrice?: number;
     couponCode?: string;
+    isLoggedIn: boolean; // Added prop to check if user is logged in
 }
 
 interface RazorpayPaymentResponse {
@@ -24,13 +25,6 @@ interface RazorpayPaymentResponse {
     razorpay_signature: string;
 }
 
-// declare global {
-//     interface Window {
-//         Razorpay: unknown;
-//     }
-// }
-
-// fixing the type error from the error occuring above: 
 declare global {
     interface Window {
         Razorpay: new (options: unknown) => { open: () => void };
@@ -45,15 +39,48 @@ export const CourseCard = ({
     notionUrl,
     price,
     discountedPrice,
-    couponCode
+    couponCode,
+    isLoggedIn
 }: CourseCardProps) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const router = useRouter();
 
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [contact, setContact] = useState("");
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            async function getUserData() {
+                try {
+                    setLoading(true);
+                    const response = await axios.get(`${BACKEND_URL}/api/v1/auth/user/me`, {
+                        withCredentials: true,
+                    });
+                    setEmail(response.data.finalUserData.email);
+                    setUsername(response.data.finalUserData.username);
+                    setContact(response.data.finalUserData.contactNumber);
+                } catch (err) {
+                    console.error("Failed to fetch user data:", err);
+                    setError("Failed to fetch user data.");
+                } finally {
+                    setLoading(false);
+                }
+            }
+            getUserData();
+        }
+    }, [isLoggedIn]);
+
     const handlePayment = async () => {
         setLoading(true);
         setError("");
+
+        if (!isLoggedIn) {
+            setError("Please login to purchase the course");
+            setLoading(false);
+            return;
+        }
 
         try {
             // 1. Initiate payment with backend
@@ -76,7 +103,7 @@ export const CourseCard = ({
             script.async = true;
 
             script.onload = () => {
-                // 3. Configure Razorpay options
+                // 3. Configure Razorpay options with user data
                 const options = {
                     key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
                     amount: finalAmount * 100, // Razorpay expects amount in paise
@@ -84,7 +111,7 @@ export const CourseCard = ({
                     name: 'Study With Shubh',
                     description: `Purchase: ${title}`,
                     order_id: order.id,
-                    handler: async function (response: RazorpayPaymentResponse) { // or maybe can this if not working: (response: any): Promise<void> 
+                    handler: async function (response: RazorpayPaymentResponse) {
                         try {
                             // 4. Verify payment with backend
                             await axios.post(
@@ -97,17 +124,17 @@ export const CourseCard = ({
                                 { withCredentials: true }
                             );
 
-                            // 5. Redirect to courses page on success
+                            // 5. Redirect to dashboard on success
                             router.push('/dashboard');
                         } catch (err) {
                             setError('Payment verification failed. Please contact support.');
-                            console.log(err)
+                            console.error(err);
                         }
                     },
                     prefill: {
-                        name: 'Customer Name', // You can fetch from user data
-                        email: 'customer@example.com', // You can fetch from user data
-                        contact: '9999999999' // You can fetch from user data
+                        name: username || 'Customer Name',
+                        email: email || 'customer@example.com',
+                        contact: contact || '9999999999'
                     },
                     theme: {
                         color: '#3399cc'
@@ -123,16 +150,24 @@ export const CourseCard = ({
                 rzp.open();
             };
 
+            script.onerror = () => {
+                setError('Failed to load payment gateway. Please try again.');
+                setLoading(false);
+            };
+
             document.body.appendChild(script);
 
+            return () => {
+                document.body.removeChild(script);
+            };
+
         } catch (err: unknown) {
-            if (axios.isAxiosError(error)) {
-                setError(error.response?.data?.message || 'Payment initiation failed');
-                console.log(err);
+            if (axios.isAxiosError(err)) {
+                setError(err.response?.data?.message || 'Payment initiation failed');
             } else {
                 setError('An unexpected error occurred.');
             }
-            // setError(err.response?.data?.message || 'Payment initiation failed');
+            console.error(err);
         } finally {
             setLoading(false);
         }
@@ -193,7 +228,7 @@ export const CourseCard = ({
 
                     {/* Error message */}
                     {error && (
-                        <div className="text-red-400 text-sm">please first login to Buy a Course | {error}</div>
+                        <div className="text-red-400 text-sm">{error}</div>
                     )}
 
                     {/* Buttons */}
@@ -204,10 +239,10 @@ export const CourseCard = ({
                             onClick={() => window.open(notionUrl)}
                         />
                         <Button
-                            text={loading ? "Loading..." : "Buy Now"}
+                            text={loading ? "Processing..." : "Buy Now"}
                             variant="green_variant"
                             onClick={handlePayment}
-                            disabled={loading}
+                            disabled={loading || !isLoggedIn}
                         />
                     </div>
                 </div>
