@@ -233,7 +233,7 @@ export default function Dashboard() {
               </div>
             ) : (
               <div className="space-y-6">
-                <h1 className="text-2xl font-bold">Your Courses</h1>
+                <h1 className="text-2xl font-bold">Start Learning!</h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {userCourses.map(({ course }) => (
                     <div
@@ -255,7 +255,8 @@ export default function Dashboard() {
                       </div>
                       <h2 className="text-xl text-center font-bold">{course.title}</h2>
 
-                      <div className="flex justify-center mt-2">
+                      <div className="flex justify-center mt-2 space-x-5">
+                        <Button variant="blue_variant" text="Open" onClick={() => {fetchCourseContent(course.id)}} />
                         <Button variant="general_2" text="View Details" onClick={() => { window.open(course.notionUrl) }} />
                       </div>
 
@@ -293,7 +294,7 @@ export default function Dashboard() {
                   getCurrentContent().map(renderContentItem)
                 ) : (
                   <div className="col-span-full text-center py-10 text-gray-400">
-                    {currentPath.length > 0 ? 'This folder is empty' : 'This course has no content yet'}
+                    {currentPath.length > 0 ? 'This folder is empty' : 'Lectures Coming Soon!!'}
                   </div>
                 )}
               </div>
