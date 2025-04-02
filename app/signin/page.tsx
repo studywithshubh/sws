@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/Input";
 import { useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import { Back } from "@/icons/Back";
 
 export default function Signin() {
     const router = useRouter();
@@ -102,7 +103,9 @@ export default function Signin() {
                         </div>
                     </div>
                 </div>
-
+                <div className="mt-10">
+                    <Button text="Back" variant="general_1" startIcon={<Back/>} onClick={() => router.push("/")}/>
+                </div>
                 <div className="mt-5">
                     <div className="mb-5">
                         <h1 className="cursor-pointer tracking-tighter text-xl md:text-3xl text-center font-bold my-1 sm:my-2">

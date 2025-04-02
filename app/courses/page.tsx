@@ -7,6 +7,7 @@ import { Navbar } from "@/components/Navbar";
 import { BACKEND_URL } from "../config";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { Back } from "@/icons/Back";
 
 interface CourseCardProps {
     id: number;
@@ -45,7 +46,7 @@ export default function Courses() {
     useEffect(() => {
         async function getCourses() {
             try {
-                const response = await axios.get(`${BACKEND_URL}/api/v1/courses/all`); 
+                const response = await axios.get(`${BACKEND_URL}/api/v1/courses/all`);
                 setCourses(response.data.COURSES || []);
             } catch (error) {
                 console.error("Error fetching courses:", error);
@@ -84,7 +85,12 @@ export default function Courses() {
             </div>
 
             <div className="relative z-10 text-white container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <Navbar/>
+                <Navbar />
+
+                <div className="mt-10">
+                    <Button text="Back" variant="general_1" startIcon={<Back />} onClick={() => router.push("/")} />
+                </div>
+                
                 <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center bg-gradient-to-r from-blue-300 to-cyan-400 bg-clip-text text-transparent">
                     Explore Our Courses
                 </h1>
@@ -102,7 +108,7 @@ export default function Courses() {
                                 id={course.id}
                                 title={course.title}
                                 imageUrl={course.imageUrl}
-                                notionUrl={course.notionUrl} 
+                                notionUrl={course.notionUrl}
                                 price={course.price}
                                 discountedPrice={course.discountedPrice}
                                 couponCode={course.couponCode}
@@ -115,22 +121,22 @@ export default function Courses() {
                             Courses Coming Soon!
                         </h2>
                         <p className="text-gray-400 text-center max-w-md">
-                            We are working hard to bring you amazing learning content. 
+                            We are working hard to bring you amazing learning content.
                             Do join and Check back later.
                         </p>
                         <div className="flex space-x-4 mt-4">
-                            <Button 
-                                variant="red_variant" 
+                            <Button
+                                variant="red_variant"
                                 onClick={() => router.push('/signup')}
                                 text="Join Now"
                             >
                             </Button>
-                            <Button 
+                            <Button
                                 variant="general_1"
                                 onClick={() => router.push('/')}
                                 text="Return Home"
                             >
-                                
+
                             </Button>
                         </div>
                     </div>
