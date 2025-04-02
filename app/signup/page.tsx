@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/Input";
 import { useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import { Back } from "@/icons/Back";
 
 export default function Signup() {
     const router = useRouter();
@@ -80,8 +81,8 @@ export default function Signup() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     className={`fixed top-4 right-4 p-4 rounded-md shadow-lg z-50 ${notification.type === 'success'
-                            ? 'bg-green-500 text-white'
-                            : 'bg-red-500 text-white'
+                        ? 'bg-green-500 text-white'
+                        : 'bg-red-500 text-white'
                         }`}
                 >
                     {notification.message}
@@ -120,6 +121,10 @@ export default function Signup() {
                             <Image src="/swsLogo.png" alt="SWS logo" width={192} height={192} className="w-32 md:w-48" />
                         </div>
                     </div>
+                </div>
+
+                <div className="mt-10">
+                    <Button text="Back" variant="general_1" startIcon={<Back />} onClick={() => router.push("/")} />
                 </div>
 
                 <div className="mt-5">

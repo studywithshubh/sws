@@ -8,6 +8,7 @@ import { useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { Navbar } from "@/components/Navbar";
+import { Back } from "@/icons/Back";
 
 export default function ForgotPassword() {
     const router = useRouter();
@@ -124,7 +125,12 @@ export default function ForgotPassword() {
 
             <div className="relative z-10 text-white container mx-auto px-4 sm:px-6 lg:px-8">
                 <Navbar />
+                <div className="mt-10">
+                    <Button text="Back" variant="general_1" startIcon={<Back />} onClick={() => router.push("/")} />
+                </div>
                 <div className="flex flex-col justify-center mt-10 space-y-10 items-center">
+
+
                     <div className="animate-pulse text-red-400 font-extrabold text-xl md:text-5xl">
                         Reset Your Password!
                     </div>
