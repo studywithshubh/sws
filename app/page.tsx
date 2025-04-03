@@ -70,7 +70,7 @@ export default function Home() {
 
                     <div className="flex flex-col sm:flex-row justify-center mt-8 gap-3 sm:gap-4">
                         <Button text="Explore Courses" variant="blue_variant" endIcon={<GraduationCap />} onClick={() => {redirect("/courses")}} />
-                        <Button text="Demo Lectures" variant="general_1" endIcon={<Camera />} onClick={() => { window.open("https://studywithshubh.tech/demo") }} />
+                        <Button text="Demo Lectures" variant="general_1" endIcon={<Camera />} onClick={() => { window.open("https://studywithshubh.vercel.app/demo") }} />
                     </div>
                 </section>
 
