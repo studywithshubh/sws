@@ -105,7 +105,7 @@ export default function Home() {
                         <ThanksForVisit />
                     </div>
 
-                    <div onClick={() => {window.open("https://shubhhere.vercel.app")}} className="order-first md:order-none">
+                    <div onClick={() => {window.open("https://imshubh.site")}} className="order-first md:order-none">
                         <Image 
                             src="/shubhImg.png" 
                             alt="SWS logo" 
