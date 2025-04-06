@@ -156,7 +156,7 @@ export default function Dashboard() {
       );
     } else {
       return (
-        <div key={item.id} className="p-4 cursor-pointer hover:scale-105 transition-all duration-300 bg-cyan-800 rounded-lg">
+        <div key={item.id} className="p-4 cursor-pointer hover:scale-105 transition-all duration-300 bg-slate-800 rounded-lg">
           <h3 className="text-lg justify-center font-semibold flex items-center gap-2">
             {item.videoUrl ? (
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
