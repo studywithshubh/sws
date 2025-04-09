@@ -146,9 +146,9 @@ export default function Dashboard() {
             {item.title}
           </h3>
           {item.description && <p className="text-gray-400 mt-1">{item.description}</p>}
-          <div className="text-xs text-gray-500 mt-2">
+          {/* <div className="text-xs text-gray-500 mt-2">
             {item.children?.length || 0} items inside
-          </div>
+          </div> */}
           <div className="flex justify-center">
             <Image src="/folderLogoImg.png" alt="folderImg" width="250" height="250" />
           </div>
