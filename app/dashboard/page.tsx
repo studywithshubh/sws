@@ -256,7 +256,7 @@ export default function Dashboard() {
                       <h2 className="text-xl text-center font-bold">{course.title}</h2>
 
                       <div className="flex justify-center mt-2 space-x-5">
-                        <Button variant="blue_variant" text="Open" onClick={() => {fetchCourseContent(course.id)}} />
+                        <Button variant="blue_variant" text="Open" onClick={() => { fetchCourseContent(course.id) }} />
                         <Button variant="general_2" text="View Details" onClick={() => { window.open(course.notionUrl) }} />
                       </div>
 

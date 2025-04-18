@@ -32,8 +32,11 @@ export const DashboardNavbar = () => {
     const [joined, setJoined] = useState("");
     const [contactNumber, setContactNumber] = useState("");
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [avatar, setAvatar] = useState<string | null>(null);
+    const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
+    const avatarMenuRef = useRef<HTMLDivElement>(null);
 
-    console.log(`is there any error: ${error}`); // this is did for preventing the build error during deployment
+    console.log(error);
 
     useEffect(() => {
         const checkAuthStatus = async () => {
@@ -52,12 +55,38 @@ export const DashboardNavbar = () => {
         checkAuthStatus();
     }, []);
 
-    // Close menu when clicking outside
+    useEffect(() => {
+        const fetchAvatar = async () => {
+            try {
+                const response = await axios.get(`${BACKEND_URL}/api/v1/avatar/get-avatar`, {
+                    withCredentials: true,
+                });
+                if (response.data && response.data.url) {
+                    setAvatar(response.data.url);
+                }
+                // if (response.data && response.data.url) {
+                //     console.log("SDASDD")
+                //     setAvatar(response.data.url);
+                // }
+            } catch (err) {
+                console.error("Failed to fetch avatar:", err);
+            }
+        };
+
+        if (isLoggedIn) {
+            fetchAvatar();
+        }
+    }, [isLoggedIn]);
+
+    // Close menus when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
                 setMenuOpen(false);
                 setSettingsOpen(false);
+            }
+            if (avatarMenuRef.current && !avatarMenuRef.current.contains(event.target as Node)) {
+                setAvatarMenuOpen(false);
             }
         };
         document.addEventListener("mousedown", handleClickOutside);
@@ -133,111 +162,167 @@ export const DashboardNavbar = () => {
                     Welcome {username}!
                 </div>
 
-                {/* Desktop Menu */}
-                <div className="hidden lg:block relative" ref={menuRef}>
-                    <Button
-                        text="Menu"
-                        variant="general_1"
-                        endIcon={<Dropdown />}
-                        onClick={() => setMenuOpen(!menuOpen)}
-                    />
-
-                    {/* Dropdown Menu - Fixed visibility issue with z-index and proper positioning */}
-                    <AnimatePresence>
-                        {menuOpen && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -20 }}
-                                transition={{ duration: 0.2 }}
-                                className="absolute right-0 mt-2 w-56 bg-slate-900 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50"
-                            >
-                                <div className="px-1 py-1">
-                                    <div className="flex m-8 flex-col justify-center items-center space-x-3">
-                                        <div className="flex justify-center space-x-2">
-                                            <div>
-                                                <User />
-                                            </div>
-                                            <div>
-                                                {role}
-                                            </div>
-                                        </div>
-                                        <div>
-                                            {email}
-                                        </div>
-                                        <div className="text-gray-400">
-                                            {contactNumber}
-                                        </div>
-                                    </div>
-                                    <div onClick={() => router.push("/")} className="p-2 text-white hover:bg-gray-700 rounded-md cursor-pointer flex transition-all duration-500">
-                                        <div className="mr-2"> <Home /> </div>
-                                        Home
-                                    </div>
-                                    <div className="p-2 text-white hover:bg-gray-700 rounded-md cursor-not-allowed flex transition-all duration-500">
-                                        <div className="mr-2"> <Bookmark /> </div>
-                                        Bookmarks
-                                    </div>
-                                    <div className="p-2 text-white hover:bg-gray-700 rounded-md cursor-not-allowed flex transition-all duration-500">
-                                        <div className="mr-2"> <Download /> </div>
-                                        Downloads
-                                    </div>
-                                    <div onClick={() => router.push("/courses")} className="p-2 text-white hover:bg-gray-700 rounded-md cursor-pointer transition-all duration-500 flex">
-                                        <div className="mr-2">
-                                            <GraduationCap />
-                                        </div>
-                                        Browse Courses
-                                    </div>
-                                    <div
-                                        className="p-2 transition-all duration-500 text-white hover:bg-gray-700 rounded-md cursor-pointer flex justify-between items-center"
-                                        onClick={() => setSettingsOpen(!settingsOpen)}
-                                    >
-                                        <div className="flex items-center">
-                                            <div className="mr-2">
-                                                <Settings />
-                                            </div>
-                                            <div>
-                                                Settings
-                                            </div>
-                                        </div>
-                                        <Right />
-                                    </div>
-                                    <div className="p-2 text-red-500 font-bold hover:bg-red-600 transition-all duration-500 hover:text-white rounded-md cursor-pointer" onClick={handleLogout}>
-                                        Logout
-                                    </div>
-                                    <div className="mt-4 flex justify-center items-center text-gray-400">
-                                        Member Since: {joined}
-                                    </div>
+                {/* Avatar and Desktop Menu */}
+                <div className="hidden lg:flex lg:items-center lg:space-x-4">
+                    {/* Avatar Image */}
+                    <div className="relative" ref={avatarMenuRef}>
+                        <button
+                            onClick={() => setAvatarMenuOpen(!avatarMenuOpen)}
+                            className="flex cursor-pointer items-center justify-center w-20 h-20 rounded-full overflow-hidden border-2 border-blue-500 hover:border-blue-300 transition-colors"
+                        >
+                            {avatar ? (
+                                <Image
+                                    src={avatar}
+                                    alt="User Avatar"
+                                    width={40}
+                                    height={40}
+                                    className="object-cover w-full h-full"
+                                />
+                            ) : (
+                                <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+                                    <User />
                                 </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                            )}
+                        </button>
 
-                    {/* Settings Dropdown */}
-                    <AnimatePresence>
-                        {settingsOpen && (
-                            <motion.div
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -20 }}
-                                transition={{ duration: 0.2 }}
-                                className="absolute right-0 top-full mt-2 w-56 bg-slate-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50"
-                            >
-                                <div className="px-4 py-3">
-                                    <h3 className="text-lg font-medium text-white">Account Settings</h3>
-                                </div>
-                                <div className="px-4 py-2">
-                                    <div className="pt-2 border-t border-gray-700">
+                        {/* Avatar Dropdown Menu */}
+                        <AnimatePresence>
+                            {avatarMenuOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="absolute right-0 mt-2 w-48 bg-slate-900 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50"
+                                >
+                                    <div className="py-1">
                                         <button
-                                            className="w-full text-left p-2 transition-all duration-500 text-white hover:bg-gray-700 rounded-md cursor-pointer"
-                                            onClick={() => router.push("/forgot-password")}
+                                            onClick={() => {
+                                                router.push("/upload-avatar");
+                                                setAvatarMenuOpen(false);
+                                            }}
+                                            className="block cursor-pointer w-full text-left px-4 py-2 text-white hover:bg-gray-700"
                                         >
-                                            Change Password
+                                            Change Profile Image
                                         </button>
                                     </div>
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+
+                    {/* Main Menu Button */}
+                    <div className="relative" ref={menuRef}>
+                        <Button
+                            text="Menu"
+                            variant="general_1"
+                            endIcon={<Dropdown />}
+                            onClick={() => setMenuOpen(!menuOpen)}
+                        />
+
+                        {/* Dropdown Menu */}
+                        <AnimatePresence>
+                            {menuOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="absolute right-0 mt-2 w-56 bg-slate-900 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50"
+                                >
+                                    <div className="px-1 py-1">
+                                        <div className="flex m-8 flex-col justify-center items-center space-x-3">
+                                            <div className="flex justify-center space-x-2">
+                                                <div>
+                                                    <User />
+                                                </div>
+                                                <div>
+                                                    {role}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                {email}
+                                            </div>
+                                            <div className="text-gray-400">
+                                                {contactNumber}
+                                            </div>
+                                        </div>
+                                        <div onClick={() => router.push("/")} className="p-2 text-white hover:bg-gray-700 rounded-md cursor-pointer flex transition-all duration-500">
+                                            <div className="mr-2"> <Home /> </div>
+                                            Home
+                                        </div>
+                                        <div className="p-2 text-white hover:bg-gray-700 rounded-md cursor-not-allowed flex transition-all duration-500">
+                                            <div className="mr-2"> <Bookmark /> </div>
+                                            Bookmarks
+                                        </div>
+                                        <div className="p-2 text-white hover:bg-gray-700 rounded-md cursor-not-allowed flex transition-all duration-500">
+                                            <div className="mr-2"> <Download /> </div>
+                                            Downloads
+                                        </div>
+                                        <div onClick={() => router.push("/courses")} className="p-2 text-white hover:bg-gray-700 rounded-md cursor-pointer transition-all duration-500 flex">
+                                            <div className="mr-2">
+                                                <GraduationCap />
+                                            </div>
+                                            Browse Courses
+                                        </div>
+                                        <div
+                                            className="p-2 transition-all duration-500 text-white hover:bg-gray-700 rounded-md cursor-pointer flex justify-between items-center"
+                                            onClick={() => setSettingsOpen(!settingsOpen)}
+                                        >
+                                            <div className="flex items-center">
+                                                <div className="mr-2">
+                                                    <Settings />
+                                                </div>
+                                                <div>
+                                                    Settings
+                                                </div>
+                                            </div>
+                                            <Right />
+                                        </div>
+                                        <div className="p-2 text-red-500 font-bold hover:bg-red-600 transition-all duration-500 hover:text-white rounded-md cursor-pointer" onClick={handleLogout}>
+                                            Logout
+                                        </div>
+                                        <div className="mt-4 flex justify-center items-center text-gray-400">
+                                            Member Since: {joined}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        {/* Settings Dropdown */}
+                        <AnimatePresence>
+                            {settingsOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="absolute right-0 top-full mt-2 w-56 bg-slate-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50"
+                                >
+                                    <div className="px-4 py-3">
+                                        <h3 className="text-lg font-medium text-white">Account Settings</h3>
+                                    </div>
+                                    <div className="px-4 py-2">
+                                        <div className="pt-2 border-t border-gray-700">
+                                            <button
+                                                className="w-full text-left p-2 transition-all duration-500 text-white hover:bg-gray-700 rounded-md cursor-pointer"
+                                                onClick={() => router.push("/forgot-password")}
+                                            >
+                                                Change Password
+                                            </button>
+                                            <button
+                                                className="w-full text-left p-2 transition-all duration-500 text-white hover:bg-gray-700 rounded-md cursor-pointer"
+                                                onClick={() => router.push("/upload-avatar")}
+                                            >
+                                                Upload Profile Image
+                                            </button>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
                 </div>
             </div>
 
@@ -287,32 +372,6 @@ export const DashboardNavbar = () => {
                                 Browse Courses
                             </button>
 
-                            {/* <button 
-                                onClick={() => {
-                                    router.push("/");
-                                    setMobileMenuOpen(false);
-                                }}
-                                className="w-full p-3 text-white hover:bg-gray-800 rounded-md flex items-center"
-                            >
-                                <div className="mr-2">
-                                    <Bookmark />
-                                </div>
-                                Bookmarks
-                            </button> */}
-
-                            {/* <button 
-                                onClick={() => {
-                                    router.push("/");
-                                    setMobileMenuOpen(false);
-                                }}
-                                className="w-full p-3 text-white hover:bg-gray-800 rounded-md flex items-center"
-                            >
-                                <div className="mr-2">
-                                    <Download />
-                                </div>
-                                Downloads
-                            </button> */}
-
                             <button
                                 onClick={() => {
                                     router.push("/forgot-password");
@@ -324,6 +383,19 @@ export const DashboardNavbar = () => {
                                     <Settings />
                                 </div>
                                 Change Password
+                            </button>
+
+                            <button
+                                onClick={() => {
+                                    router.push("/upload-avatar");
+                                    setMobileMenuOpen(false);
+                                }}
+                                className="w-full p-3 text-white hover:bg-gray-800 rounded-md flex items-center"
+                            >
+                                <div className="mr-2">
+                                    <User />
+                                </div>
+                                Change Profile Image
                             </button>
 
                             <button
