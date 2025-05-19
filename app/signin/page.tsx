@@ -10,6 +10,7 @@ import { useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { Back } from "@/icons/Back";
+import OauthProvider from "@/components/ui/OauthProviderBtn";
 
 export default function Signin() {
     const router = useRouter();
@@ -142,6 +143,10 @@ export default function Signin() {
                             onClick={handleSignin}
                             disabled={loading}
                         />
+                    </div>
+
+                    <div className="mt-5">
+                        <OauthProvider/>
                     </div>
 
                     <p className="text-white text-center mt-6">
