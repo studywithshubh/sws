@@ -121,7 +121,7 @@ export const CourseCard = ({
             script.onload = () => {
                 // 3. Configure Razorpay options with user data
                 const options = {
-                    key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+                    key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '',
                     amount: finalAmount * 100, // Razorpay expects amount in paise
                     currency: 'INR',
                     name: 'Study With Shubh',

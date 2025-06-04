@@ -117,7 +117,7 @@ export default function Signin() {
                         </h1>
                     </div>
 
-                    <div className="flex cursor-pointer flex-col justify-center items-center">
+                    <div className="flex cursor-pointer flex-col md:flex-row justify-center items-center">
                         <Input
                             name="email"
                             value={formData.email}
