@@ -10,7 +10,8 @@ import { useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { Back } from "@/icons/Back";
-import OauthProvider from "@/components/ui/OauthProviderBtn";
+import GoogleBtn from "@/components/ui/GoogleAuthBtn";
+import GithubBtn from "@/components/ui/GithubAuthBtn";
 
 export default function Signin() {
     const router = useRouter();
@@ -105,7 +106,7 @@ export default function Signin() {
                     </div>
                 </div>
                 <div className="mt-10">
-                    <Button text="Back" variant="general_1" startIcon={<Back/>} onClick={() => router.push("/")}/>
+                    <Button text="Back" variant="general_1" startIcon={<Back />} onClick={() => router.push("/")} />
                 </div>
                 <div className="mt-5">
                     <div className="mb-5">
@@ -145,8 +146,17 @@ export default function Signin() {
                         />
                     </div>
 
-                    <div className="mt-5">
-                        <OauthProvider/>
+                    <div className="flex justify-center mt-5 items-center">
+                        <div className="flex justify-center items-center w-full cursor-pointer max-w-sm">
+                            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+                            <span className="px-4 text-sm font-medium text-white">OR CONTINUE WITH</span>
+                            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+                        </div>
+                    </div>
+
+                    <div className="mt-5 flex justify-center flex-col items-center gap-5">
+                        <GoogleBtn text="Sign in with Google" />
+                        <GithubBtn text="Sign in with Github" />
                     </div>
 
                     <p className="text-white text-center mt-6">

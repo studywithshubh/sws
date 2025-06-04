@@ -30,7 +30,7 @@ export const DashboardNavbar = () => {
     const [username, setUsername] = useState("");
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [joined, setJoined] = useState("");
-    const [contactNumber, setContactNumber] = useState("");
+    // const [contactNumber, setContactNumber] = useState("");
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [avatar, setAvatar] = useState<string | null>(null);
     const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
@@ -105,7 +105,7 @@ export const DashboardNavbar = () => {
                     setEmail(response.data.finalUserData.email);
                     setUsername(response.data.finalUserData.username);
                     setJoined(response.data.finalUserData.userAddedAt.split("T")[0].split("-").reverse().join("-"));
-                    setContactNumber(response.data.finalUserData.contactNumber);
+                    // setContactNumber(response.data.finalUserData.contactNumber);
                 } catch (err) {
                     console.error("Failed to fetch user data:", err);
                     setError("Failed to fetch user data.");
@@ -243,9 +243,9 @@ export const DashboardNavbar = () => {
                                             <div>
                                                 {email}
                                             </div>
-                                            <div className="text-gray-400">
+                                            {/* <div className="text-gray-400">
                                                 {contactNumber}
-                                            </div>
+                                            </div> */}
                                         </div>
                                         <div onClick={() => router.push("/")} className="p-2 text-white hover:bg-gray-700 rounded-md cursor-pointer flex transition-all duration-500">
                                             <div className="mr-2"> <Home /> </div>
@@ -342,7 +342,7 @@ export const DashboardNavbar = () => {
                                 <span className="text-lg font-medium">{role}</span>
                             </div>
                             <div className="text-blue-300">{email}</div>
-                            <div className="text-gray-400">{contactNumber}</div>
+                            {/* <div className="text-gray-400">{contactNumber}</div> */}
                         </div>
 
                         <div className="space-y-2">
