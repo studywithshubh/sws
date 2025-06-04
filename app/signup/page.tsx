@@ -10,6 +10,8 @@ import { useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { Back } from "@/icons/Back";
+import GoogleBtn from "@/components/ui/GoogleAuthBtn";
+import GithubBtn from "@/components/ui/GithubAuthBtn";
 
 export default function Signup() {
     const router = useRouter();
@@ -139,47 +141,69 @@ export default function Signup() {
                     {!showOtpInput ? (
                         /* Signup Form */
                         <div className="flex cursor-pointer flex-col justify-center items-center">
-                            <Input
-                                name="username"
-                                value={formData.username}
-                                onChange={handleChange}
-                                className="m-3 font-bold"
-                                type="text"
-                                placeholder="Username"
-                            />
-                            <Input
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                className="m-3 font-bold"
-                                type="email"
-                                placeholder="Email"
-                            />
-                            <Input
-                                name="contactNumber"
-                                value={formData.contactNumber}
-                                onChange={handleChange}
-                                className="m-3 font-bold"
-                                type="text"
-                                placeholder="Contact Number"
-                            />
-                            <Input
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                className="m-3 font-bold"
-                                type="password"
-                                placeholder="Password"
-                            />
+                            <div className="flex flex-col md:flex-row">
+                                <div>
+                                    <Input
+                                        name="username"
+                                        value={formData.username}
+                                        onChange={handleChange}
+                                        className="m-3 font-bold"
+                                        type="text"
+                                        placeholder="Username"
+                                    />
+                                    <Input
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        className="m-3 font-bold"
+                                        type="email"
+                                        placeholder="Email"
+                                    />
+                                </div>
 
-                            <div className="flex justify-center">
-                                <Button
-                                    text={loading ? 'Signing Up...' : 'SignUp'}
-                                    variant="general_1"
-                                    endIcon={loading ? null : <EnterDoor />}
-                                    onClick={handleSignup}
-                                    disabled={loading}
-                                />
+                                <div>
+                                    <Input
+                                        name="contactNumber"
+                                        value={formData.contactNumber}
+                                        onChange={handleChange}
+                                        className="m-3 font-bold"
+                                        type="text"
+                                        placeholder="Contact Number"
+                                    />
+                                    <Input
+                                        name="password"
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        className="m-3 font-bold"
+                                        type="password"
+                                        placeholder="Password"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex justify-center flex-col">
+                                <div className="flex justify-center mt-2">
+                                    <Button
+                                        text={loading ? 'Signing Up...' : 'SignUp'}
+                                        variant="general_1"
+                                        endIcon={loading ? null : <EnterDoor />}
+                                        onClick={handleSignup}
+                                        disabled={loading}
+                                    />
+                                </div>
+
+                                <div className="flex justify-center mt-10 items-center">
+                                    <div className="flex justify-center items-center w-full cursor-pointer max-w-sm">
+                                        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+                                        <span className="px-4 text-sm font-medium text-white">OR CONTINUE WITH</span>
+                                        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+                                    </div>
+                                </div>
+
+                                <div className="mt-5 flex justify-center flex-col md:flex-row items-center gap-5">
+                                    <GoogleBtn text="Continue with Google" />
+                                    <GithubBtn text="Continue with Github" />
+                                </div>
                             </div>
                         </div>
                     ) : (

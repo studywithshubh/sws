@@ -10,6 +10,17 @@ import { FaDatabase, FaCode, FaLaptopCode, FaServer, FaPython, FaSchool } from "
 import Image from "next/image";
 import Footer from "@/components/Footer";
 import { redirect } from "next/navigation";
+import { useEffect } from "react";
+
+// Type augmentation for Navigator
+declare global {
+    interface Navigator {
+        brave?: {
+            isBrave?: unknown;
+        };
+    }
+}
+
 
 export default function Home() {
     const courses = [
@@ -20,7 +31,63 @@ export default function Home() {
         { name: "Python Programming", icon: <FaPython /> },
         { name: "MySQL & Databases", icon: <FaDatabase /> },
     ];
+    // Brave detection and alert
+    useEffect(() => {
+        const isBrave = navigator.brave !== undefined ||
+            navigator.userAgent.includes('Brave');
 
+        if (isBrave) {
+            const alertDiv = document.createElement('div');
+            alertDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                max-width: 400px;
+                padding: 20px;
+                background: #f0f3ff;
+                border-left: 5px solid #4C6EF5;
+                border-radius: 4px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                z-index: 9999;
+                font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+                color: #333;
+                line-height: 1.5;
+            `;
+
+            alertDiv.innerHTML = `
+                <button style="
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    background: none;
+                    border: none;
+                    font-size: 18px;
+                    cursor: pointer;
+                    color: #666;
+                " onclick="this.parentNode.remove()">×</button>
+                <strong style="display: block; margin-bottom: 10px; color: #4C6EF5">
+                    <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 8px;">
+                        <path fill="#4C6EF5" d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm-1.06 13.54L7.4 12l1.41-1.41 2.12 2.12 4.24-4.24 1.41 1.41-5.64 5.66z"/>
+                    </svg>
+                    Brave Browser Settings Required
+                </strong>
+                <p>For login to work properly:</p>
+                <ol style="padding-left: 20px; margin: 10px 0;">
+                    <li>Click the <strong>Brave Shields icon</strong> (🦁) in address bar</li>
+                    <li>Select <strong>"Advanced Controls"</strong></li>
+                    <li>Under <strong>"Cookies"</strong>, choose <strong>"Allow all cookies"</strong></li>
+                    <li><strong>Refresh</strong> the page</li>
+                </ol>
+                <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                    <em>Note: You can re-enable shields after logging in.</em><br>
+                    This is required because Brave blocks authentication cookies by default.
+                </p>
+            `;
+
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 20 * 1000);
+        }
+    }, []);
     return (
         <div className="relative min-h-screen bg-mainBgColor overflow-hidden">
             {/* Fixed glow effects - made smaller on mobile */}
@@ -69,8 +136,8 @@ export default function Home() {
                     </p>
 
                     <div className="flex flex-col sm:flex-row justify-center mt-8 gap-3 sm:gap-4">
-                        <Button text="Explore Courses" variant="blue_variant" endIcon={<GraduationCap />} onClick={() => {redirect("/courses")}} />
-                        <Button text="Demo Lectures" variant="general_1" endIcon={<Camera />} onClick={() => { redirect("/demo") }}  />
+                        <Button text="Explore Courses" variant="blue_variant" endIcon={<GraduationCap />} onClick={() => { redirect("/courses") }} />
+                        <Button text="Demo Lectures" variant="general_1" endIcon={<Camera />} onClick={() => { redirect("/demo") }} />
                     </div>
                 </section>
 
@@ -95,7 +162,7 @@ export default function Home() {
                     </div>
 
                     <div className="flex justify-center mt-8 md:mt-10">
-                        <Button text="Join Now" variant="red_variant" onClick={() => {redirect("/signup")} } />
+                        <Button text="Join Now" variant="red_variant" onClick={() => { redirect("/signup") }} />
                     </div>
                 </section>
 
@@ -105,12 +172,12 @@ export default function Home() {
                         <ThanksForVisit />
                     </div>
 
-                    <div onClick={() => {window.open("https://imshubh.site")}} className="order-first md:order-none">
-                        <Image 
-                            src="/shubhImg.png" 
-                            alt="SWS logo" 
-                            width={100} 
-                            height={100} 
+                    <div onClick={() => { window.open("https://imshubh.site") }} className="order-first md:order-none">
+                        <Image
+                            src="/shubhImg.png"
+                            alt="SWS logo"
+                            width={100}
+                            height={100}
                             className="cursor-pointer w-24 sm:w-32 md:w-64 lg:w-80"
                             priority
                         />
@@ -131,8 +198,8 @@ export default function Home() {
                         </span>
                     </h1>
                 </section>
-                            
-                <Footer/>
+
+                <Footer />
             </div>
         </div>
     );
