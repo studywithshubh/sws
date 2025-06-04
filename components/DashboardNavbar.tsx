@@ -17,6 +17,7 @@ import { Download } from "@/icons/Download";
 import { Home } from "@/icons/Home";
 import { Close } from "@/icons/Close";
 import { MenuBars } from "@/icons/MenuBars";
+import GithubStar from "./ui/GithubStar";
 
 export const DashboardNavbar = () => {
     const router = useRouter();
@@ -160,6 +161,10 @@ export const DashboardNavbar = () => {
                 {/* Welcome Message - Hidden on mobile */}
                 <div className="hidden lg:block text-xl text-center animate-bounce hover:underline">
                     Welcome {username}!
+                </div>
+
+                <div className="md:block hidden">
+                    <GithubStar />
                 </div>
 
                 {/* Avatar and Desktop Menu */}
@@ -406,8 +411,13 @@ export const DashboardNavbar = () => {
                             </button>
                         </div>
 
+
                         <div className="mt-8 text-center text-gray-500">
                             Member since: {joined}
+                        </div>
+
+                        <div className="flex justify-center mt-10">
+                            <GithubStar />
                         </div>
                     </motion.div>
                 )}

@@ -1,3 +1,4 @@
+import { Redirect } from '@/icons/Redirect';
 import React, { useState, useEffect } from 'react';
 
 const GithubStar = () => {
@@ -13,7 +14,7 @@ const GithubStar = () => {
             try {
                 const response = await fetch(`https://api.github.com/repos/${username}/${repo}`);
                 const data = await response.json();
-                setStarCount(data.stargazers_count || 0);
+                setStarCount(data.stargazers_count || <Redirect/>);
             } catch (error) {
                 console.error('Error fetching star count:', error);
             }
