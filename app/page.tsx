@@ -11,6 +11,7 @@ import Image from "next/image";
 import Footer from "@/components/Footer";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
+import { User } from "@/icons/User";
 
 // Type augmentation for Navigator
 declare global {
@@ -138,6 +139,9 @@ export default function Home() {
                     <div className="flex flex-col sm:flex-row justify-center mt-8 gap-3 sm:gap-4">
                         <Button text="Explore Courses" variant="blue_variant" endIcon={<GraduationCap />} onClick={() => { redirect("/courses") }} />
                         <Button text="Demo Lectures" variant="general_1" endIcon={<Camera />} onClick={() => { redirect("/demo") }} />
+                    </div>
+                    <div className="mt-3">
+                        <Button text="Explore the SWS Community (BETA)" variant="red_variant" endIcon={<User />} onClick={() => { redirect("/community") }} />
                     </div>
                 </section>
 
