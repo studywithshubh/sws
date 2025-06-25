@@ -11,7 +11,6 @@ import Image from "next/image";
 import Footer from "@/components/Footer";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
-import { User } from "@/icons/User";
 
 // Type augmentation for Navigator
 declare global {
